@@ -8,6 +8,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        brand: {
+          orange: '#f97316',
+          cream: '#FDFCF8',
+          warm: '#F5F5F0',
+          charcoal: '#1A1A1A',
+          stone: '#78716c',
+        },
         orange: {
           50: '#fff7ed',
           100: '#ffedd5',
@@ -20,6 +27,18 @@ module.exports = {
           800: '#9a3412',
           900: '#7c2d12',
         },
+      },
+      borderRadius: {
+        '3xl': '1.5rem',
+        '4xl': '2rem',
+      },
+      fontFamily: {
+        sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+        serif: ['Playfair Display', 'serif'],
+      },
+      boxShadow: {
+        'premium': '0 20px 50px rgba(0, 0, 0, 0.05)',
+        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
       },
     },
   },

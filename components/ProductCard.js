@@ -2,39 +2,46 @@ import React from 'react';
 
 const ProductCard = ({ product }) => {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group cursor-pointer">
-      <div className="relative aspect-square overflow-hidden bg-gray-100">
+    <div className="premium-card group relative">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem]">
         <img 
           src={product.images[0]} 
           alt={product.name} 
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
-        <div className="absolute top-3 left-3">
-          <span className="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+        {/* Hover overlay with action */}
+        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 z-20 w-3/4">
+          <button className="w-full bg-white text-brand-charcoal py-4 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:bg-brand-orange hover:text-white transition-colors">
+            立即抢购 — ¥{product.price}
+          </button>
+        </div>
+
+        <div className="absolute top-6 left-6">
+          <span className="bg-white/90 backdrop-blur-sm text-brand-charcoal text-[10px] font-black px-4 py-2 rounded-full shadow-sm tracking-widest uppercase border border-white/50">
             {product.tag}
           </span>
         </div>
       </div>
       
-      <div className="p-5">
-        <div className="text-xs text-gray-400 mb-1 uppercase tracking-wider">{product.brand}</div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2 truncate">{product.name}</h3>
+      <div className="py-8 px-2">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <div className="text-[10px] text-brand-stone mb-1 font-black uppercase tracking-[0.2em]">{product.brand}</div>
+            <h3 className="text-xl font-bold text-brand-charcoal group-hover:text-brand-orange transition-colors duration-300 tracking-tight">{product.name}</h3>
+          </div>
+        </div>
         
-        <div className="bg-orange-50 p-3 rounded-lg mb-4">
-          <p className="text-xs text-orange-800 leading-relaxed italic">
+        <div className="mb-6 relative">
+          <div className="absolute -left-2 top-0 bottom-0 w-0.5 bg-orange-200 group-hover:bg-brand-orange transition-colors"></div>
+          <p className="pl-4 text-xs text-brand-stone leading-relaxed font-medium italic">
             “{product.selectionReason}”
           </p>
         </div>
         
-        <div className="flex justify-between items-center">
-          <div className="text-2xl font-black text-gray-900">
-            <span className="text-sm font-normal mr-1">¥</span>{product.price}
-          </div>
-          <button className="bg-gray-900 text-white p-2 rounded-lg hover:bg-orange-500 transition-colors shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 100-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-            </svg>
-          </button>
+        <div className="flex items-center space-x-2">
+          <div className="h-2 w-2 rounded-full bg-green-500"></div>
+          <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">In Stock / Premium Quality</span>
         </div>
       </div>
     </div>

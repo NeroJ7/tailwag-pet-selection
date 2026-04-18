@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@layer base {
+  body {
+    @apply bg-brand-cream text-brand-charcoal selection:bg-orange-100 selection:text-orange-900;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border-b border-white/10;
+  }
+
+  .premium-card {
+    @apply bg-white rounded-[2rem] transition-all duration-700 hover:shadow-premium hover:-translate-y-2;
+  }
+
+  .title-serif {
+    @apply font-serif italic tracking-tight;
+  }
+}
