@@ -2,11 +2,12 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import ProductCard from '../components/ProductCard';
+import MobileNav from '../components/MobileNav';
 import products from '../data/products.json';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-20 md:pb-0">
       {/* 导航栏 */}
       <Navbar />
 
@@ -67,7 +68,6 @@ export default function Home() {
               <p className="text-gray-500">每一次挑选，我们都为您考虑更多</p>
             </div>
             
-            {/* 简单的分类过滤逻辑 (模拟) */}
             <div className="flex flex-wrap justify-center gap-2">
               {['全部', '智能用品', '猫咪专区', '宠物家居', '户外出行'].map((cat) => (
                 <button key={cat} className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${cat === '全部' ? 'bg-orange-500 text-white shadow-lg shadow-orange-200' : 'bg-gray-100 text-gray-500 hover:bg-orange-50 hover:text-orange-500'}`}>
@@ -125,12 +125,6 @@ export default function Home() {
 
       {/* 移动端底部导航 */}
       <MobileNav />
-    </div>
-  );
-}
-�得。
-        </div>
-      </footer>
     </div>
   );
 }
