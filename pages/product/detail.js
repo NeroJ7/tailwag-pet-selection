@@ -76,8 +76,23 @@ const ProductDetail = ({ productId }) => {
               </div>
             </div>
 
+            {/* 供应链透明 & VOC 针对性解决 (新增) */}
+            <div className="mt-8 space-y-4">
+              <h4 className="font-bold text-gray-900">✨ TailWag 供应链透明承诺</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-green-50 p-4 rounded-xl border border-green-100">
+                  <p className="text-xs text-green-700 font-bold mb-1">√ 拒绝碎末</p>
+                  <p className="text-[10px] text-green-600 leading-tight">采用三段式充氮避震包装，确保每一块都完整如初。</p>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                  <p className="text-xs text-blue-700 font-bold mb-1">√ 产地溯源</p>
+                  <p className="text-[10px] text-blue-600 leading-tight">扫描包装二维码即可查看极地采集许可证及清关单据。</p>
+                </div>
+              </div>
+            </div>
+
             {/* 操作按钮 */}
-            <div className="mt-auto flex space-x-4">
+            <div className="mt-12 flex space-x-4">
               <button className="flex-1 bg-gray-900 text-white py-4 rounded-xl font-bold hover:bg-black transition-all shadow-lg">
                 立即购买
               </button>

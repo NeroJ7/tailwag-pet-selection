@@ -2,46 +2,50 @@ import React from 'react';
 
 const ProductCard = ({ product }) => {
   return (
-    <div className="premium-card group relative">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem]">
+    <div className="premium-card group relative flex flex-col items-center text-center">
+      <div className="relative aspect-[3/4] overflow-hidden rounded-[2.5rem] w-full mb-10 group-hover:shadow-premium transition-all duration-700 hover:shadow-2xl">
         <img 
           src={product.images[0]} 
           alt={product.name} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] ease-in-out"
         />
-        {/* Hover overlay with action */}
-        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 z-20 w-3/4">
-          <button className="w-full bg-white text-brand-charcoal py-4 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:bg-brand-orange hover:text-white transition-colors">
-            立即抢购 — ¥{product.price}
+        
+        {/* Hover action overlay */}
+        <div className="absolute inset-0 bg-brand-charcoal/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+        
+        <div className="absolute bottom-10 left-10 right-10 translate-y-20 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-20">
+          <button className="w-full bg-white text-brand-charcoal py-5 rounded-full font-black text-[10px] uppercase tracking-[0.4em] shadow-2xl hover:bg-brand-orange hover:text-white transition-all duration-500 hover:scale-105 active:scale-95">
+            Purchase — ¥{product.price}
           </button>
         </div>
 
-        <div className="absolute top-6 left-6">
-          <span className="bg-white/90 backdrop-blur-sm text-brand-charcoal text-[10px] font-black px-4 py-2 rounded-full shadow-sm tracking-widest uppercase border border-white/50">
+        <div className="absolute top-8 left-8">
+          <span className="bg-white/95 backdrop-blur-md text-brand-charcoal text-[9px] font-black px-6 py-2 rounded-full shadow-sm tracking-[0.3em] uppercase border border-white/50 relative overflow-hidden group/tag">
             {product.tag}
+            <div className="absolute inset-0 bg-brand-orange/10 -translate-x-full group-hover/tag:translate-x-0 transition-transform duration-500"></div>
           </span>
         </div>
       </div>
       
-      <div className="py-8 px-2">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <div className="text-[10px] text-brand-stone mb-1 font-black uppercase tracking-[0.2em]">{product.brand}</div>
-            <h3 className="text-xl font-bold text-brand-charcoal group-hover:text-brand-orange transition-colors duration-300 tracking-tight">{product.name}</h3>
-          </div>
+      <div className="w-full px-6 flex flex-col items-center">
+        <div className="text-[9px] text-brand-stone mb-3 font-black uppercase tracking-[0.5em] opacity-60">{product.brand}</div>
+        <h3 className="text-2xl font-black text-brand-charcoal group-hover:text-brand-orange transition-colors duration-500 tracking-tight leading-tight mb-6">
+          {product.name}
+        </h3>
+        
+        <div className="relative w-full max-w-[200px] mb-8">
+          <div className="h-[1px] w-12 bg-stone-100 mx-auto group-hover:w-full group-hover:bg-brand-orange transition-all duration-700"></div>
         </div>
         
-        <div className="mb-6 relative">
-          <div className="absolute -left-2 top-0 bottom-0 w-0.5 bg-orange-200 group-hover:bg-brand-orange transition-colors"></div>
-          <p className="pl-4 text-xs text-brand-stone leading-relaxed font-medium italic">
+        <div className="mb-8 opacity-80 group-hover:opacity-100 transition-opacity duration-700">
+          <p className="text-sm text-brand-stone leading-loose font-medium italic italic">
             “{product.selectionReason}”
           </p>
         </div>
         
-        <div className="flex items-center space-x-2">
-          <div className="h-2 w-2 rounded-full bg-green-500"></div>
-          <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">In Stock / Premium Quality</span>
+        <div className="flex items-center space-x-3 mt-auto">
+          <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></div>
+          <span className="text-[9px] font-black text-stone-400 uppercase tracking-[0.3em]">Curation / Verified</span>
         </div>
       </div>
     </div>
