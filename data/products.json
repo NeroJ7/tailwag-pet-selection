@@ -22,21 +22,82 @@
     ]
   },
   {
-    "id": "arctic-gold-salmon-krill",
-    "name": "Arctic Gold | 南极磷虾三文鱼双效冻干",
-    "brand": "PureNature x TailWag",
-    "category": "极地冻干",
-    "price": 24.5,
-    "images": ["https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80"],
-    "sourcingUrl": "https://detail.1688.com/offer/example_id_salmon_krill.html",
-    "selectionReason": "海洋Omega-3之王，专门解决换季掉毛与皮肤干燥问题。",
-    "tag": "美毛神器",
-    "margin": "580%",
-    "vocHighlights": ["低温破壁技术(易吸收)", "无添加任何化学诱食剂"],
-    "description": "融合了南极磷虾的强抗氧化性与深海三文鱼的高蛋白，让爱宠拥有闪耀毛色。",
+    "id": "minimalist-smart-feeder-v2",
+    "name": "Orbit | 极简主义智能自动喂食器",
+    "brand": "TechPet x TailWag",
+    "category": "智能硬件",
+    "price": 89.0,
+    "images": ["https://s.alicdn.com/@sc04/kf/H68627d07c8645bc9f583c804909e3caw.jpg"],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/2025-Charge-Battery-APP-Remote-Time_1601444001377.html",
+    "selectionReason": "Apple风格工业设计，5G双频WiFi连接。解决市面上自动喂食器连接不稳、卡粮严重的痛点。",
+    "tag": "智能优选",
+    "margin": "420%",
+    "vocHighlights": ["304不锈钢内胆(防黑下巴)", "物理按键+APP双控(防误触)"],
+    "description": "Orbit 系列重新定义了宠物喂养的美学。它不只是一个机器，更是家居环境中的一件艺术品。采用顶级喷砂铝合金工艺，触感细腻。",
     "specs": [
-      { "label": "原料", "value": "南极磷虾 + 阿拉斯加三文鱼" },
-      { "label": "Omega-3", "value": "≥ 4.5%" }
+      { "label": "容量", "value": "3L / 5L 可选" },
+      { "label": "连接", "value": "Tuya Smart / HomeKit" },
+      { "label": "材质", "value": "喷砂铝合金 + 304不锈钢" }
+    ],
+    "reviews": []
+  },
+  {
+    "id": "zen-wooden-cat-tower",
+    "name": "ZenTower | 现代禅意实木猫爬架",
+    "brand": "EcoHome x TailWag",
+    "category": "宠物家居",
+    "price": 258.0,
+    "images": ["https://s.alicdn.com/@sc04/kf/H78627d07c8645bc9f583c804909e3caw.jpg"],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Luxury-Modern-Solid-Wood-Cat-Tree_1601581491961.html",
+    "selectionReason": "摒弃了传统地毯材质，改用泰国进口橡胶木。解决传统爬架难清理、易生虫、视觉廉价的问题。",
+    "tag": "高奢家居",
+    "margin": "350%",
+    "vocHighlights": ["全拆卸水洗设计(洁癖友好)", "太空舱全景视窗(满足偷窥欲)"],
+    "description": "ZenTower 采用极简线条勾勒出猫咪的游乐场。每一块木板都经过手工打磨，圆润无棱角，确保安全的同时展现原木的自然温润。",
+    "specs": [
+      { "label": "高度", "value": "155cm / 185cm" },
+      { "label": "木材", "value": "泰国A级橡胶木" },
+      { "label": "配件", "value": "纳米级太空舱" }
+    ],
+    "reviews": []
+  },
+  {
+    "id": "ortho-cloud-bed-velvet",
+    "name": "Cloud | 骨科记忆棉云端宠物床",
+    "brand": "Snooze x TailWag",
+    "category": "宠物家居",
+    "price": 125.0,
+    "images": ["https://s.alicdn.com/@sc04/kf/H88627d07c8645bc9f583c804909e3caw.jpg"],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Manufacturer-Wholesale-Luxury-Extra-Large-Velvet_1601035650664.html",
+    "selectionReason": "采用40D高密度慢回弹记忆棉，针对老龄犬及关节疾病犬设计。解决普通宠物床塌陷快、支撑力不足的问题。",
+    "tag": "健康关爱",
+    "margin": "480%",
+    "vocHighlights": ["抗菌防螨面料(皮肤病友好)", "隐形拉链设计(防止拆家破坏)"],
+    "description": "给它一个拥抱般的睡眠。Cloud 床垫通过压力感应技术，完美贴合宠物身体曲线，有效缓解压力，提升深度睡眠时间。",
+    "specs": [
+      { "label": "内胆", "value": "40D 医疗级记忆棉" },
+      { "label": "面料", "value": "抗菌天鹅绒" },
+      { "label": "底部", "value": "硅胶防滑点塑" }
+    ],
+    "reviews": []
+  },
+  {
+    "id": "aviator-luxury-stroller",
+    "name": "Aviator | 飞行家奢华铝合金宠物推车",
+    "brand": "UrbanVoyage x TailWag",
+    "category": "户外出行",
+    "price": 389.0,
+    "images": ["https://s.alicdn.com/@sc04/kf/H98627d07c8645bc9f583c804909e3caw.jpg"],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Luxury-Pet-Stroller-Dog-Cat-Golden_1601314682601.html",
+    "selectionReason": "航空级铝镁合金车架，单手一键收车。解决传统推车笨重、避震差、折叠复杂的痛点。",
+    "tag": "明星同款",
+    "margin": "300%",
+    "vocHighlights": ["SUV级四轮避震(通过性极强)", "全景透气天窗(防焦虑设计)"],
+    "description": "Aviator 是宠物出行的终极座驾。精致的香槟金车架配合顶级皮质拉杆，让每一次遛弯都像在走红毯。",
+    "specs": [
+      { "label": "车架", "value": "航空级铝镁合金" },
+      { "label": "承重", "value": "25kg 以内" },
+      { "label": "自重", "value": "6.8kg (轻盈便携)" }
     ],
     "reviews": []
   }

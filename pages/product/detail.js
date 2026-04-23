@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
 import products from '../../data/products.json';
+import { addToCart } from '../../utils/cart-util';
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -9,6 +10,16 @@ const ProductDetail = () => {
   
   // Find product by id from query, fallback to first product if not found
   const product = products.find(p => p.id === id) || products[0];
+
+  const handleAddToCart = () => {
+    addToCart(product);
+    alert('已加入甄选清单');
+  };
+
+  const handleBuyNow = () => {
+    addToCart(product);
+    router.push('/cart');
+  };
 
   if (!product) return <div className="min-h-screen bg-brand-cream flex items-center justify-center font-black uppercase tracking-widest">Loading...</div>;
 
@@ -88,11 +99,17 @@ const ProductDetail = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col space-y-6">
-              <button className="w-full bg-brand-charcoal text-white py-8 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:bg-brand-orange hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 active:scale-95 shadow-premium">
+              <button 
+                onClick={handleBuyNow}
+                className="w-full bg-brand-charcoal text-white py-8 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:bg-brand-orange hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 active:scale-95 shadow-premium"
+              >
                 立即甄选 — ¥{product.price}
               </button>
-              <button className="w-full bg-white text-brand-charcoal border-2 border-stone-100 py-8 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:border-brand-charcoal transition-all duration-500 active:scale-95">
-                加入收藏
+              <button 
+                onClick={handleAddToCart}
+                className="w-full bg-white text-brand-charcoal border-2 border-stone-100 py-8 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:border-brand-charcoal transition-all duration-500 active:scale-95"
+              >
+                加入购物车
               </button>
             </div>
 

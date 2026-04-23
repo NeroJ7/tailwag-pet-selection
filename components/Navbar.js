@@ -1,16 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import SearchModal from './SearchModal';
+import { getCart } from '../utils/cart-util';
 
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
+
+    const updateCartCount = () => {
+      const cart = getCart();
+      setCartCount(cart.reduce((sum, item) => sum + item.quantity, 0));
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('cart-updated', updateCartCount);
+    updateCartCount();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('cart-updated', updateCartCount);
+    };
   }, []);
 
   return (
@@ -29,6 +43,7 @@ const Navbar = () => {
             {[
               { label: '首页', href: '/' },
               { label: '选品标准', href: '/selection-process' },
+              { label: '我的订单', href: '/orders' },
               { label: '溯源看板', href: '/dashboard' },
               { label: '招商入驻', href: '/brand-recruitment' }
             ].map((item, i) => (
@@ -54,7 +69,11 @@ const Navbar = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
-                <span className="absolute top-2 right-2 bg-brand-orange text-white text-[8px] font-black h-4 w-4 flex items-center justify-center rounded-full ring-4 ring-white shadow-lg">2</span>
+                {cartCount > 0 && (
+                  <span className="absolute top-2 right-2 bg-brand-orange text-white text-[8px] font-black h-4 w-4 flex items-center justify-center rounded-full ring-4 ring-white shadow-lg">
+                    {cartCount}
+                  </span>
+                )}
               </a>
             </div>
 
