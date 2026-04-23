@@ -24,12 +24,12 @@ const Hero = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-8">
-            <button className="bg-brand-charcoal text-white px-12 py-6 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:bg-brand-orange hover:shadow-2xl hover:shadow-orange-200 transition-all duration-500 hover:-translate-y-2 active:scale-95">
+            <a href="#products" className="bg-brand-charcoal text-white px-12 py-6 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:bg-brand-orange hover:shadow-2xl hover:shadow-orange-200 transition-all duration-500 hover:-translate-y-2 active:scale-95 text-center">
               立即探索甄选
-            </button>
-            <button className="bg-white text-brand-charcoal border-2 border-stone-100 px-12 py-6 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:border-brand-charcoal transition-all duration-500 hover:-translate-y-2 active:scale-95">
-              选品哲学 →
-            </button>
+            </a>
+            <a href="/selection-process" className="bg-white text-brand-charcoal border-2 border-stone-100 px-12 py-6 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:border-brand-charcoal transition-all duration-500 hover:-translate-y-2 active:scale-95 text-center">
+              选品哲学 &rarr;
+            </a>
           </div>
         </div>
         

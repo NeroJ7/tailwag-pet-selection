@@ -1,137 +1,156 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
 import products from '../../data/products.json';
 
-const ProductDetail = ({ productId }) => {
-  // 模拟从数据中获取商品
-  const product = products.find(p => p.id === productId) || products[0];
+const ProductDetail = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  
+  // Find product by id from query, fallback to first product if not found
+  const product = products.find(p => p.id === id) || products[0];
+
+  if (!product) return <div className="min-h-screen bg-brand-cream flex items-center justify-center font-black uppercase tracking-widest">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-cream selection:bg-brand-orange selection:text-white">
       <Navbar />
       
-      <main className="max-w-6xl mx-auto px-6 py-12">
-        {/* 面包屑导航 */}
-        <div className="text-sm text-gray-400 mb-8">
-          首页 / {product.category} / <span className="text-gray-900">{product.name}</span>
+      <main className="max-w-7xl mx-auto px-6 md:px-12 pt-40 pb-32">
+        {/* Breadcrumbs */}
+        <div className="text-[10px] font-black uppercase tracking-[0.4em] text-brand-stone mb-12 flex items-center space-x-4">
+          <a href="/" className="hover:text-brand-orange transition-colors">Home</a>
+          <span className="opacity-30">/</span>
+          <span className="opacity-30">{product.category}</span>
+          <span className="opacity-30">/</span>
+          <span className="text-brand-charcoal">{product.name}</span>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 bg-white rounded-3xl p-8 shadow-sm">
-          {/* 左侧：图片展示 */}
-          <div className="space-y-4">
-            <div className="aspect-square rounded-2xl overflow-hidden bg-gray-100">
+        <div className="grid lg:grid-cols-12 gap-20 items-start">
+          {/* Left: Image Gallery */}
+          <div className="lg:col-span-7 space-y-8">
+            <div className="aspect-[4/5] rounded-[3rem] overflow-hidden bg-white shadow-premium relative group">
               <img 
                 src={product.images[0]} 
                 alt={product.name} 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105"
               />
+              <div className="absolute top-10 left-10">
+                <span className="bg-brand-charcoal text-white text-[10px] font-black px-8 py-3 rounded-full uppercase tracking-[0.3em]">
+                  {product.tag}
+                </span>
+              </div>
             </div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-6">
               {product.images.map((img, i) => (
-                <div key={i} className="aspect-square rounded-lg overflow-hidden border-2 border-orange-500 cursor-pointer">
+                <div key={i} className={`aspect-square rounded-3xl overflow-hidden border-2 transition-all duration-500 cursor-pointer hover:scale-105 ${i === 0 ? 'border-brand-orange' : 'border-transparent bg-white shadow-sm'}`}>
                   <img src={img} className="w-full h-full object-cover" alt="" />
                 </div>
               ))}
             </div>
           </div>
 
-          {/* 右侧：商品信息 */}
-          <div className="flex flex-col">
-            <div className="mb-6">
-              <span className="inline-block bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full mb-3">
-                {product.tag}
-              </span>
-              <h1 className="text-3xl font-black text-gray-900 mb-2">{product.name}</h1>
-              <p className="text-gray-400 font-medium">{product.brand} 系列</p>
+          {/* Right: Product Info */}
+          <div className="lg:col-span-5 flex flex-col sticky top-40">
+            <div className="mb-12">
+              <div className="text-xs font-black uppercase tracking-[0.5em] text-brand-orange mb-6">{product.brand} Selection</div>
+              <h1 className="text-5xl md:text-6xl font-black text-brand-charcoal mb-6 tracking-tighter leading-none">{product.name}</h1>
+              <div className="h-1 w-20 bg-brand-orange mb-10"></div>
+              <div className="text-5xl font-black text-brand-charcoal tracking-tighter">
+                <span className="text-2xl font-normal mr-2">¥</span>{product.price}
+              </div>
             </div>
 
-            <div className="text-4xl font-black text-gray-900 mb-8">
-              <span className="text-xl font-normal mr-1">¥</span>{product.price}
-            </div>
-
-            {/* 核心价值：为什么选择 */}
-            <div className="bg-orange-50 rounded-2xl p-6 mb-8 border border-orange-100">
-              <h3 className="flex items-center text-orange-700 font-bold mb-3">
-                <span className="mr-2">✨</span> TailWag 优选理由
+            {/* Core Value: Why TailWag */}
+            <div className="bg-white rounded-[2.5rem] p-10 mb-10 shadow-premium border border-stone-50 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+              <h3 className="flex items-center text-brand-charcoal font-black text-xs uppercase tracking-widest mb-6">
+                <span className="mr-3 text-lg">✨</span> TailWag 优选理由
               </h3>
-              <p className="text-orange-800 text-sm leading-relaxed font-medium">
-                {product.selectionReason}
+              <p className="text-brand-stone text-sm leading-loose font-medium italic relative z-10">
+                “{product.selectionReason}”
               </p>
             </div>
 
-            <p className="text-gray-600 mb-8 leading-relaxed">
+            <p className="text-brand-stone mb-12 leading-loose font-medium text-lg">
               {product.description}
             </p>
 
-            {/* 规格 */}
-            <div className="border-t border-gray-100 pt-8 mb-8">
-              <h4 className="font-bold text-gray-900 mb-4">产品参数</h4>
-              <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                {product.specs.map((spec, i) => (
-                  <div key={i} className="flex justify-between text-sm">
-                    <span className="text-gray-400">{spec.label}</span>
-                    <span className="text-gray-900 font-medium">{spec.value}</span>
-                  </div>
-                ))}
-              </div>
+            {/* Specs */}
+            <div className="space-y-6 mb-12">
+              {product.specs.map((spec, i) => (
+                <div key={i} className="flex justify-between items-center py-4 border-b border-stone-100">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-brand-stone opacity-60">{spec.label}</span>
+                  <span className="text-sm font-black text-brand-charcoal uppercase tracking-widest">{spec.value}</span>
+                </div>
+              ))}
             </div>
 
-            {/* 供应链透明 & VOC 针对性解决 (新增) */}
-            <div className="mt-8 space-y-4">
-              <h4 className="font-bold text-gray-900">✨ TailWag 供应链透明承诺</h4>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-green-50 p-4 rounded-xl border border-green-100">
-                  <p className="text-xs text-green-700 font-bold mb-1">√ 拒绝碎末</p>
-                  <p className="text-[10px] text-green-600 leading-tight">采用三段式充氮避震包装，确保每一块都完整如初。</p>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                  <p className="text-xs text-blue-700 font-bold mb-1">√ 产地溯源</p>
-                  <p className="text-[10px] text-blue-600 leading-tight">扫描包装二维码即可查看极地采集许可证及清关单据。</p>
-                </div>
-              </div>
+            {/* Action Buttons */}
+            <div className="flex flex-col space-y-6">
+              <button className="w-full bg-brand-charcoal text-white py-8 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:bg-brand-orange hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 active:scale-95 shadow-premium">
+                立即甄选 — ¥{product.price}
+              </button>
+              <button className="w-full bg-white text-brand-charcoal border-2 border-stone-100 py-8 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:border-brand-charcoal transition-all duration-500 active:scale-95">
+                加入收藏
+              </button>
             </div>
 
-            {/* 操作按钮 */}
-            <div className="mt-12 flex space-x-4">
-              <button className="flex-1 bg-gray-900 text-white py-4 rounded-xl font-bold hover:bg-black transition-all shadow-lg">
-                立即购买
-              </button>
-              <button className="flex-1 border-2 border-gray-900 text-gray-900 py-4 rounded-xl font-bold hover:bg-gray-50 transition-all">
-                加入购物车
-              </button>
+            {/* Transparency Commitment */}
+            <div className="mt-16 grid grid-cols-2 gap-6">
+              <div className="p-6 bg-white rounded-3xl border border-stone-50 shadow-sm flex flex-col items-center text-center">
+                <span className="text-2xl mb-4">🛡️</span>
+                <p className="text-[10px] font-black uppercase tracking-widest text-brand-charcoal mb-2">产地溯源</p>
+                <p className="text-[8px] text-brand-stone font-bold leading-tight">100% 透明供应链</p>
+              </div>
+              <div className="p-6 bg-white rounded-3xl border border-stone-50 shadow-sm flex flex-col items-center text-center">
+                <span className="text-2xl mb-4">✈️</span>
+                <p className="text-[10px] font-black uppercase tracking-widest text-brand-charcoal mb-2">极速配送</p>
+                <p className="text-[8px] text-brand-stone font-bold leading-tight">顺丰/联邦快递直达</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* 底部详细评测区 */}
-        <section className="mt-12 grid md:grid-cols-3 gap-12">
-          <div className="md:col-span-2 space-y-8">
-            <div className="bg-white rounded-3xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold mb-6 pb-4 border-b">详细评测</h3>
-              <div className="prose text-gray-600">
-                <p className="mb-4">经过我们的实机测试，这款产品在细节处理上非常到位...</p>
-                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80" className="rounded-xl mb-4" />
-                <p>其核心优势在于其材质的耐用性和对宠物行为习惯的深度研究。</p>
+        {/* Reviews Section */}
+        <section className="mt-32 pt-32 border-t border-stone-100">
+          <div className="grid lg:grid-cols-12 gap-20">
+            <div className="lg:col-span-8">
+              <h3 className="text-4xl font-black text-brand-charcoal mb-16 tracking-tighter">生命之礼 · <span className="title-serif text-brand-orange">用户回响</span></h3>
+              <div className="space-y-12">
+                {product.reviews.map((rev, i) => (
+                  <div key={i} className="bg-white p-12 rounded-[3rem] shadow-sm border border-stone-50 relative group hover:shadow-premium transition-all duration-700">
+                    <div className="flex justify-between items-center mb-8">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 rounded-full bg-brand-cream flex items-center justify-center font-black text-brand-orange text-xs uppercase">
+                          {rev.user.charAt(0)}
+                        </div>
+                        <div>
+                          <p className="font-black text-brand-charcoal text-xs uppercase tracking-widest">{rev.user}</p>
+                          <p className="text-[8px] font-black text-brand-stone uppercase tracking-[0.3em] opacity-40">Verified Purchase</p>
+                        </div>
+                      </div>
+                      <div className="flex text-brand-orange text-[10px]">
+                        {"★★★★★".split("").map((s, i) => <span key={i}>{s}</span>)}
+                      </div>
+                    </div>
+                    <p className="text-lg text-brand-charcoal font-medium leading-relaxed italic">
+                      “{rev.comment}”
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-          
-          <div className="space-y-8">
-            <div className="bg-white rounded-3xl p-8 shadow-sm">
-              <h3 className="text-xl font-bold mb-6">真实评价</h3>
-              {product.reviews.length > 0 ? (
-                product.reviews.map((rev, i) => (
-                  <div key={i} className="mb-6 last:mb-0">
-                    <div className="flex justify-between mb-2">
-                      <span className="font-bold text-sm text-gray-900">{rev.user}</span>
-                      <span className="text-orange-500">★★★★★</span>
-                    </div>
-                    <p className="text-gray-500 text-sm italic">“{rev.comment}”</p>
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-400 text-sm">暂无评价，快来抢首评吧！</p>
-              )}
+            
+            <div className="lg:col-span-4">
+              <div className="bg-brand-charcoal text-white p-12 rounded-[3rem] sticky top-40 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/20 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <h4 className="text-xl font-black mb-8 relative z-10">关于选品委员会</h4>
+                <p className="text-stone-400 text-sm leading-loose mb-10 font-medium relative z-10">
+                  TailWag 每一款入驻商品均需经过由 12 位资深兽医、5 位宠物行为学专家及 100 位真实用户组成的委员会严苛投票。
+                </p>
+                <a href="/selection-process" className="inline-block text-brand-orange font-black text-[10px] uppercase tracking-[0.4em] hover:text-white transition-colors">了解更多选品标准 &rarr;</a>
+              </div>
             </div>
           </div>
         </section>

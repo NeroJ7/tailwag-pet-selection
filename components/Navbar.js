@@ -26,9 +26,14 @@ const Navbar = () => {
           </div>
           
           <div className="hidden lg:flex items-center space-x-16 text-brand-charcoal font-black text-[10px] uppercase tracking-[0.3em]">
-            {['首页', '选品标准', '所有商品', '智能硬件'].map((item, i) => (
-              <a key={i} href={item === '选品标准' ? '/selection-process' : '/'} className="hover:text-brand-orange transition-all duration-300 relative group">
-                {item}
+            {[
+              { label: '首页', href: '/' },
+              { label: '选品标准', href: '/selection-process' },
+              { label: '溯源看板', href: '/dashboard' },
+              { label: '招商入驻', href: '/brand-recruitment' }
+            ].map((item, i) => (
+              <a key={i} href={item.href} className="hover:text-brand-orange transition-all duration-300 relative group">
+                {item.label}
                 <span className="absolute -bottom-2 left-1/2 w-0 h-[2px] bg-brand-orange transition-all duration-500 group-hover:w-full group-hover:left-0"></span>
               </a>
             ))}

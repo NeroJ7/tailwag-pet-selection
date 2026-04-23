@@ -33,7 +33,7 @@ const SourcingDashboard = () => {
             <h3 className="text-sm font-bold text-gray-400 mb-4 uppercase tracking-widest">物流状态 (国际站)</h3>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-xs">深圳盐田港 -> LAX</span>
+                <span className="text-xs">深圳盐田港 {"->"} LAX</span>
                 <span className="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded">海运中 (12天)</span>
               </div>
             </div>
