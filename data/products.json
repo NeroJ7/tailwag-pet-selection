@@ -82,6 +82,28 @@
     "reviews": []
   },
   {
+    "id": "nordic-oak-double-bowl",
+    "name": "Nordic | 北欧中古实木双食盆",
+    "brand": "OakStyle x TailWag",
+    "category": "宠物家居",
+    "price": 68.0,
+    "images": ["https://sc01.alicdn.com/kf/H571d9edb31374ad29cb6f9aa1d228eacv.png"],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Wooden-Elevated-Pet-Bowl-Stand-Ceramic_1601601091909.html",
+    "selectionReason": "选用北美特级白橡木，搭配手工磨砂陶瓷盆。解决塑料碗易滋生细菌、陶瓷碗易打碎、普通木架易发霉的痛点。",
+    "tag": "中古美学",
+    "margin": "520%",
+    "vocHighlights": ["三层防水环保漆(防霉防潮)", "15度黄金护颈倾角(解决吞咽压力)"],
+    "description": "这是餐桌上的艺术。Nordic 系列融合了中古家具的稳重与现代主义的简约。15度的科学倾角设计，专为猫咪和中小型犬的颈椎健康打造。",
+    "specs": [
+      { "label": "架体", "value": "FAS级北美白橡木" },
+      { "label": "餐盆", "value": "1300度高温强化瓷" },
+      { "label": "倾角", "value": "15° 科学护颈" }
+    ],
+    "reviews": [
+      { "user": "DesignLover_Pet", "rating": 5, "comment": "Finally a pet bowl that matches my mid-century modern living room. The quality of the oak is stunning." }
+    ]
+  },
+  {
     "id": "aviator-luxury-stroller",
     "name": "Aviator | 飞行家奢华铝合金宠物推车",
     "brand": "UrbanVoyage x TailWag",

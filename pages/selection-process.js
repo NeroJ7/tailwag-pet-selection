@@ -4,24 +4,24 @@ import Navbar from '../components/Navbar';
 const SelectionProcess = () => {
   const steps = [
     {
-      title: "全球溯源",
-      desc: "我们的买手团队走遍全球，与顶级供应链直接合作，确保每一件产品都有迹可循。",
-      icon: "🌍"
+      title: "VOC 深度审计",
+      desc: "扫描全球数万条真实用户评价，精准捕捉‘碎末多’、‘难清理’、‘支架不稳’等痛点，倒逼工厂进行工艺改进。",
+      icon: "🔍"
     },
     {
-      title: "实验室测评",
-      desc: "每一款入库产品都必须经过内部实验室的耐用性测试、安全成分分析和宠物行为适应性测试。",
-      icon: "🔬"
+      title: "材质健康溯源",
+      desc: "所有实木必须达到 FAS 级，陶瓷需经过 1300 度高温烧制。我们拒绝任何会危害宠物健康的廉价平替。",
+      icon: "🪵"
     },
     {
-      title: "实地试用",
-      desc: "由 50+ 位专业养宠博主和资深兽医组成的“摇尾评审团”进行为期 30 天的深度试用。",
+      title: "实地深度测评",
+      desc: "由 50+ 位专业养宠博主 and 资深兽医组成的“摇尾评审团”进行为期 30 天的深度试用，拒绝任何实验室外的空谈。",
       icon: "🐾"
     },
     {
-      title: "严苛淘汰",
-      desc: "在初选中，只有评分前 10% 的商品才能进入 TailWag 最终优选清单。",
-      icon: "🚫"
+      title: "全链路透明仓储",
+      desc: "从 1688 源头工厂到国际转运中心，再到您家门口。每一个节点均可实时追踪，拒绝供应链暗箱操作。",
+      icon: "🛰️"
     }
   ];
 
@@ -98,9 +98,9 @@ const SelectionProcess = () => {
         <section className="py-40 text-center px-10 bg-brand-cream">
           <div className="max-w-3xl mx-auto bg-white p-20 rounded-[4rem] shadow-premium border border-stone-50">
             <h2 className="text-5xl font-black mb-10 tracking-tighter">准备好让毛孩子<br/><span className="text-brand-orange title-serif">兴奋到摇尾巴了吗？</span></h2>
-            <button className="bg-brand-charcoal text-white px-12 py-6 rounded-full font-black text-sm uppercase tracking-widest hover:bg-brand-orange shadow-2xl transition-all hover:scale-105 duration-300">
-              立即探索甄选作品 →
-            </button>
+            <a href="/" className="inline-block bg-brand-charcoal text-white px-12 py-6 rounded-full font-black text-sm uppercase tracking-widest hover:bg-brand-orange shadow-2xl transition-all hover:scale-105 duration-300">
+              立即探索甄选作品 &rarr;
+            </a>
           </div>
         </section>
       </main>
