@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import ProductCard from '../components/ProductCard';
@@ -6,6 +6,12 @@ import MobileNav from '../components/MobileNav';
 import products from '../data/products.json';
 
 export default function Home() {
+  const [activeCategory, setActiveCategory] = useState('全部');
+
+  const filteredProducts = activeCategory === '全部' 
+    ? products 
+    : products.filter(p => p.category === activeCategory);
+
   return (
     <div className="min-h-screen bg-brand-cream pb-20 md:pb-0 font-sans selection:bg-brand-orange selection:text-white">
       <Navbar />
@@ -74,8 +80,12 @@ export default function Home() {
               </div>
               
               <div className="flex flex-wrap gap-4 z-10">
-                {['全部', '智能用品', '极地冻干', '宠物家居', '户外出行'].map((cat) => (
-                  <button key={cat} className={`px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 ${cat === '全部' ? 'bg-brand-charcoal text-white shadow-premium' : 'bg-white text-brand-stone hover:bg-brand-orange hover:text-white hover:shadow-xl hover:-translate-y-1'}`}>
+                {['全部', '智能硬件', '极地冻干', '宠物家居', '户外出行'].map((cat) => (
+                  <button 
+                    key={cat} 
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 ${activeCategory === cat ? 'bg-brand-charcoal text-white shadow-premium' : 'bg-white text-brand-stone hover:bg-brand-orange hover:text-white hover:shadow-xl hover:-translate-y-1'}`}
+                  >
                     {cat}
                   </button>
                 ))}
@@ -83,13 +93,16 @@ export default function Home() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-24">
-              {products.map(product => (
+              {filteredProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
             
             <div className="mt-40 text-center">
-              <button className="group relative inline-flex items-center justify-center px-16 py-8 overflow-hidden font-black text-xs uppercase tracking-[0.3em] transition duration-300 ease-out border-2 border-brand-charcoal rounded-full shadow-md">
+              <button 
+                onClick={() => setActiveCategory('全部')}
+                className="group relative inline-flex items-center justify-center px-16 py-8 overflow-hidden font-black text-xs uppercase tracking-[0.3em] transition duration-300 ease-out border-2 border-brand-charcoal rounded-full shadow-md"
+              >
                 <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-brand-charcoal group-hover:translate-x-0 ease">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </span>
@@ -124,26 +137,26 @@ export default function Home() {
               <div>
                 <h5 className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-orange mb-10">探索</h5>
                 <ul className="space-y-6 text-stone-400 font-bold text-sm uppercase tracking-widest">
-                  <li><a href="#" className="hover:text-white transition-colors">最新作品</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">智能硬件</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">极地营养</a></li>
+                  <li><a href="#products" className="hover:text-white transition-colors">最新作品</a></li>
+                  <li><a href="/orders" className="hover:text-white transition-colors">我的订单</a></li>
+                  <li><a href="/dashboard" className="hover:text-white transition-colors">溯源看板</a></li>
                 </ul>
               </div>
               <div>
                 <h5 className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-orange mb-10">服务</h5>
                 <ul className="space-y-6 text-stone-400 font-bold text-sm uppercase tracking-widest">
-                  <li><a href="#" className="hover:text-white transition-colors">选品专栏</a></li>
+                  <li><a href="/selection-process" className="hover:text-white transition-colors">选品专栏</a></li>
                   <li><a href="/brand-recruitment" className="hover:text-brand-orange">品牌入驻</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">全球配送</a></li>
+                  <li><a href="/cart" className="hover:text-white transition-colors">全球配送</a></li>
                 </ul>
               </div>
               <div className="col-span-2 md:col-span-1">
                 <h5 className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-orange mb-10">新闻订阅</h5>
                 <p className="text-stone-500 text-sm mb-8 font-medium">获取独家选品内幕与会员限时礼遇。</p>
-                <div className="relative">
+                <form onSubmit={(e) => { e.preventDefault(); alert('感谢订阅！'); }} className="relative">
                   <input type="email" placeholder="YOUR EMAIL" className="w-full bg-stone-900/50 border-b border-stone-800 py-6 px-0 text-white focus:border-brand-orange focus:ring-0 transition-all placeholder:text-stone-700 font-black text-xs tracking-widest" />
-                  <button className="absolute right-0 bottom-6 text-brand-orange font-black text-xs uppercase tracking-widest hover:text-white transition-colors">JOIN &rarr;</button>
-                </div>
+                  <button type="submit" className="absolute right-0 bottom-6 text-brand-orange font-black text-xs uppercase tracking-widest hover:text-white transition-colors">JOIN &rarr;</button>
+                </form>
               </div>
             </div>
           </div>

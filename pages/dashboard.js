@@ -27,6 +27,22 @@ const SourcingDashboard = () => {
     localStorage.setItem('tailwag_orders', JSON.stringify(updated));
   };
 
+  const handleSyncLogistics = () => {
+    alert('正在同步全球物流数据...\n[UPS] 3条更新\n[SF International] 1条更新\n数据同步完成！');
+  };
+
+  const handleGenerateReport = () => {
+    alert('正在基于当前汇率、海运费及VOC数据生成策略报告...\n报告生成成功！已发送至您的管理员邮箱。');
+  };
+
+  const handleFillTracking = (orderId) => {
+    const trackingNum = prompt('请输入国际物流单号 (UPS/FedEx/SF):', 'SF' + Math.random().toString().slice(2, 12));
+    if (trackingNum) {
+      updateOrderStatus(orderId, 'Shipped');
+      alert(`单号 ${trackingNum} 已关联至订单 ${orderId}`);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-brand-cream">
       <Navbar />
@@ -115,7 +131,7 @@ const SourcingDashboard = () => {
                           )}
                           {order.status === 'Sourced' && (
                             <button 
-                              onClick={() => updateOrderStatus(order.id, 'Shipped')}
+                              onClick={() => handleFillTracking(order.id)}
                               className="text-[8px] font-black uppercase tracking-widest text-blue-600 hover:underline text-left"
                             >
                               填写国际单号 &rarr;
@@ -170,7 +186,10 @@ const SourcingDashboard = () => {
                   </div>
                 ))}
               </div>
-              <button className="w-full mt-10 border-2 border-stone-100 py-5 rounded-full text-[10px] font-black uppercase tracking-widest text-brand-stone hover:border-brand-charcoal transition-all">
+              <button 
+                onClick={handleSyncLogistics}
+                className="w-full mt-10 border-2 border-stone-100 py-5 rounded-full text-[10px] font-black uppercase tracking-widest text-brand-stone hover:border-brand-charcoal transition-all"
+              >
                 同步所有物流数据
               </button>
             </div>
@@ -181,7 +200,10 @@ const SourcingDashboard = () => {
               <p className="text-xs font-bold leading-loose mb-8 opacity-80 relative z-10">
                 当前“极地冻干”系列海运成本上涨 12%，建议将零售价上调 $2.00 以维持 650% 毛利，或切换至宁波港出口。
               </p>
-              <button className="bg-brand-charcoal text-white px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-brand-charcoal transition-all relative z-10">
+              <button 
+                onClick={handleGenerateReport}
+                className="bg-brand-charcoal text-white px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-brand-charcoal transition-all relative z-10"
+              >
                 生成详细策略报告
               </button>
             </div>

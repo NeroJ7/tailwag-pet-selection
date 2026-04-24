@@ -5,8 +5,11 @@
     "brand": "PureNature x TailWag",
     "category": "极地冻干",
     "price": 29.9,
-    "images": ["https://s.alicdn.com/@sc04/kf/Hd6de27d07c8645bc9f583c804909e3caw.jpg"],
-    "sourcingUrl": "https://detail.1688.com/offer/example_id_deer_heart.html",
+    "images": [
+      "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://detail.1688.com/offer/731085025732.html",
     "selectionReason": "1688外贸工厂直供，通过VOHC及FDA认证。单一肉源低敏，牛磺酸含量是普通冻干的3.5倍。",
     "tag": "供应链直供",
     "margin": "650%",
@@ -27,8 +30,11 @@
     "brand": "TechPet x TailWag",
     "category": "智能硬件",
     "price": 89.0,
-    "images": ["https://s.alicdn.com/@sc04/kf/H68627d07c8645bc9f583c804909e3caw.jpg"],
-    "sourcingUrl": "https://www.alibaba.com/product-detail/2025-Charge-Battery-APP-Remote-Time_1601444001377.html",
+    "images": [
+      "https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1548128591-1407336b9960?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/2025-Stylish-Dual-5G-Camera-Smart_1601452677201.html",
     "selectionReason": "Apple风格工业设计，5G双频WiFi连接。解决市面上自动喂食器连接不稳、卡粮严重的痛点。",
     "tag": "智能优选",
     "margin": "420%",
@@ -47,8 +53,11 @@
     "brand": "EcoHome x TailWag",
     "category": "宠物家居",
     "price": 258.0,
-    "images": ["https://s.alicdn.com/@sc04/kf/H78627d07c8645bc9f583c804909e3caw.jpg"],
-    "sourcingUrl": "https://www.alibaba.com/product-detail/Luxury-Modern-Solid-Wood-Cat-Tree_1601581491961.html",
+    "images": [
+      "https://images.unsplash.com/photo-1545249390-6bdfa286032f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Modern-Luxury-Design-Premium-Cat-Tree_1601464057181.html",
     "selectionReason": "摒弃了传统地毯材质，改用泰国进口橡胶木。解决传统爬架难清理、易生虫、视觉廉价的问题。",
     "tag": "高奢家居",
     "margin": "350%",
@@ -67,8 +76,11 @@
     "brand": "Snooze x TailWag",
     "category": "宠物家居",
     "price": 125.0,
-    "images": ["https://s.alicdn.com/@sc04/kf/H88627d07c8645bc9f583c804909e3caw.jpg"],
-    "sourcingUrl": "https://www.alibaba.com/product-detail/Manufacturer-Wholesale-Luxury-Extra-Large-Velvet_1601035650664.html",
+    "images": [
+      "https://images.unsplash.com/photo-1591768793355-74d7cab7bd1f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Top-Selling-Dog-Bed-for-Large_1600733831566.html",
     "selectionReason": "采用40D高密度慢回弹记忆棉，针对老龄犬及关节疾病犬设计。解决普通宠物床塌陷快、支撑力不足的问题。",
     "tag": "健康关爱",
     "margin": "480%",
@@ -87,7 +99,10 @@
     "brand": "OakStyle x TailWag",
     "category": "宠物家居",
     "price": 68.0,
-    "images": ["https://sc01.alicdn.com/kf/H571d9edb31374ad29cb6f9aa1d228eacv.png"],
+    "images": [
+      "https://images.unsplash.com/photo-1615678815958-5910c6811c25?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=1200&q=80"
+    ],
     "sourcingUrl": "https://www.alibaba.com/product-detail/Wooden-Elevated-Pet-Bowl-Stand-Ceramic_1601601091909.html",
     "selectionReason": "选用北美特级白橡木，搭配手工磨砂陶瓷盆。解决塑料碗易滋生细菌、陶瓷碗易打碎、普通木架易发霉的痛点。",
     "tag": "中古美学",
@@ -109,7 +124,10 @@
     "brand": "UrbanVoyage x TailWag",
     "category": "户外出行",
     "price": 389.0,
-    "images": ["https://s.alicdn.com/@sc04/kf/H98627d07c8645bc9f583c804909e3caw.jpg"],
+    "images": [
+      "https://images.unsplash.com/photo-1513360309081-38f07627399c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&w=1200&q=80"
+    ],
     "sourcingUrl": "https://www.alibaba.com/product-detail/Luxury-Pet-Stroller-Dog-Cat-Golden_1601314682601.html",
     "selectionReason": "航空级铝镁合金车架，单手一键收车。解决传统推车笨重、避震差、折叠复杂的痛点。",
     "tag": "明星同款",
