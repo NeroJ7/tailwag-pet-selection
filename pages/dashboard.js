@@ -123,7 +123,10 @@ const SourcingDashboard = () => {
                         <td className="py-8 align-top space-y-2 flex flex-col">
                           {order.status === 'Pending' && (
                             <button 
-                              onClick={() => updateOrderStatus(order.id, 'Sourced')}
+                              onClick={() => {
+                                updateOrderStatus(order.id, 'Sourced');
+                                alert('已标记为从 1688 采购');
+                              }}
                               className="text-[8px] font-black uppercase tracking-widest text-brand-orange hover:underline text-left"
                             >
                               标记已采购 (1688) &rarr;
