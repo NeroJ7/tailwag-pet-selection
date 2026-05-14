@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import { getCart, removeFromCart, placeOrder } from '../utils/cart-util';
+import { getCart, removeFromCart, placeOrder, updateCartQuantity, clearCart } from '../utils/cart-util';
 import { useRouter } from 'next/router';
 
 const CartPage = () => {
@@ -87,14 +87,32 @@ const CartPage = () => {
                   <div className="ml-10 flex-grow">
                     <div className="text-[10px] font-black uppercase tracking-widest text-brand-orange mb-2">{item.brand}</div>
                     <h3 className="text-xl font-black text-brand-charcoal tracking-tight">{item.name}</h3>
-                    <div className="mt-4 flex items-center space-x-6">
-                      <span className="text-lg font-black text-brand-charcoal">¥{item.price}</span>
-                      <span className="text-xs font-medium text-brand-stone">数量: {item.quantity}</span>
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <span className="text-lg font-black text-brand-charcoal">¥{item.price}</span>
+                        <span className="text-xs font-medium text-brand-stone">小计: ¥{(item.price * item.quantity).toFixed(2)}</span>
+                      </div>
+                      {/* 数量增减按钮组 */}
+                      <div className="flex items-center space-x-2">
+                        <button 
+                          onClick={() => updateCartQuantity(item.id, -1)}
+                          className="w-8 h-8 rounded-full bg-brand-warm text-brand-charcoal font-black text-sm hover:bg-brand-orange hover:text-white transition-all flex items-center justify-center"
+                        >
+                          −
+                        </button>
+                        <span className="w-10 text-center font-black text-brand-charcoal">{item.quantity}</span>
+                        <button 
+                          onClick={() => updateCartQuantity(item.id, 1)}
+                          className="w-8 h-8 rounded-full bg-brand-warm text-brand-charcoal font-black text-sm hover:bg-brand-orange hover:text-white transition-all flex items-center justify-center"
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <button 
                     onClick={() => removeFromCart(item.id)}
-                    className="p-4 text-brand-stone hover:text-red-500 transition-colors"
+                    className="p-4 text-brand-stone hover:text-red-500 transition-colors ml-4"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -105,6 +123,20 @@ const CartPage = () => {
             </div>
 
             <div className="lg:col-span-4">
+              {/* 清空购物车按钮 */}
+              <div className="mb-4 text-right">
+                <button 
+                  onClick={() => {
+                    if (window.confirm('确定要清空购物车吗？此操作不可撤销。')) {
+                      clearCart();
+                    }
+                  }}
+                  className="text-xs font-medium text-red-400 hover:text-red-500 transition-colors"
+                >
+                  清空购物车
+                </button>
+              </div>
+              
               <div className="bg-brand-charcoal text-white p-12 rounded-[3rem] shadow-premium sticky top-40">
                 <h3 className="text-2xl font-black mb-10 tracking-tight italic text-brand-orange">结算中心</h3>
                 
@@ -125,10 +157,10 @@ const CartPage = () => {
                       </div>
                     </div>
                     <button 
-                      onClick={() => setCheckoutStep(2)}
+                      onClick={() => router.push('/checkout')}
                       className="w-full bg-brand-orange text-white py-8 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:bg-white hover:text-brand-charcoal transition-all shadow-xl"
                     >
-                      确认并填写地址 &rarr;
+                      去结算 &rarr;
                     </button>
                   </>
                 ) : (

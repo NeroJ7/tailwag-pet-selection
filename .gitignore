@@ -4,5 +4,9 @@ out
 build
 .DS_Store
 *.pem
-.env*.local
+.env
+.env.*
+!.env*.local
 .vercel
+
+/src/generated/prisma

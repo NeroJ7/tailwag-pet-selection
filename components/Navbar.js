@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import SearchModal from './SearchModal';
 import { getCart } from '../utils/cart-util';
+import { useSession, signOut } from 'next-auth/react';
 
 const Navbar = () => {
+  const { data: session } = useSession();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +30,14 @@ const Navbar = () => {
     };
   }, []);
 
+  const navLinks = [
+    { label: '首页', href: '/' },
+    { label: '选品标准', href: '/selection-process' },
+    { label: '我的订单', href: '/orders' },
+    { label: '溯源看板', href: '/dashboard' },
+    { label: '招商入驻', href: '/brand-recruitment' }
+  ];
+
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 px-6 md:px-12 py-4 ${scrolled ? 'py-4 glass shadow-glass' : 'py-8 bg-transparent'}`}>
@@ -39,14 +50,9 @@ const Navbar = () => {
             </a>
           </div>
           
+          {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-16 text-brand-charcoal font-black text-[10px] uppercase tracking-[0.3em]">
-            {[
-              { label: '首页', href: '/' },
-              { label: '选品标准', href: '/selection-process' },
-              { label: '我的订单', href: '/orders' },
-              { label: '溯源看板', href: '/dashboard' },
-              { label: '招商入驻', href: '/brand-recruitment' }
-            ].map((item, i) => (
+            {navLinks.map((item, i) => (
               <a key={i} href={item.href} className="hover:text-brand-orange transition-all duration-300 relative group">
                 {item.label}
                 <span className="absolute -bottom-2 left-1/2 w-0 h-[2px] bg-brand-orange transition-all duration-500 group-hover:w-full group-hover:left-0"></span>
@@ -54,6 +60,7 @@ const Navbar = () => {
             ))}
           </div>
 
+          {/* Right Icons */}
           <div className="flex items-center space-x-8">
             <div className="flex items-center space-x-4">
               <button 
@@ -77,11 +84,83 @@ const Navbar = () => {
               </a>
             </div>
 
-            <a href="/login" className="hidden md:flex bg-brand-charcoal text-white px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-brand-orange hover:shadow-2xl hover:shadow-orange-200 transition-all duration-500 hover:-translate-y-1 active:scale-95">
-              Member Center
-            </a>
+            {/* Desktop Auth */}
+            {session ? (
+              <div className="hidden md:flex items-center space-x-4">
+                <span className="text-xs font-bold text-brand-charcoal">
+                  {session.user?.name || session.user?.email?.split('@')[0]}
+                </span>
+                <button
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                  className="bg-brand-charcoal text-white px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-orange hover:shadow-2xl hover:shadow-orange-200 transition-all duration-500 hover:-translate-y-1 active:scale-95"
+                >
+                  退出
+                </button>
+              </div>
+            ) : (
+              <a href="/login" className="hidden md:flex bg-brand-charcoal text-white px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-brand-orange hover:shadow-2xl hover:shadow-orange-200 transition-all duration-500 hover:-translate-y-1 active:scale-95">
+                Member Center
+              </a>
+            )}
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-3 text-brand-charcoal hover:text-brand-orange hover:bg-white rounded-full transition-all duration-500"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-stone-100 py-8 px-6 space-y-6">
+            {navLinks.map((item, i) => (
+              <a
+                key={i}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-brand-charcoal font-black text-[12px] uppercase tracking-[0.3em] hover:text-brand-orange transition-colors duration-300 py-2"
+              >
+                {item.label}
+              </a>
+            ))}
+            
+            <div className="pt-6 border-t border-stone-100">
+              {session ? (
+                <div className="space-y-4">
+                  <p className="text-xs font-bold text-brand-charcoal">
+                    {session.user?.name || session.user?.email?.split('@')[0]}
+                  </p>
+                  <button
+                    onClick={() => {
+                      signOut({ callbackUrl: '/' });
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full bg-brand-charcoal text-white py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-brand-orange transition-all duration-500"
+                  >
+                    退出登录
+                  </button>
+                </div>
+              ) : (
+                <a
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full text-center bg-brand-charcoal text-white py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-brand-orange transition-all duration-500"
+                >
+                  登录 / 注册
+                </a>
+              )}
+            </div>
+          </div>
+        )}
       </nav>
 
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />

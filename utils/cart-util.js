@@ -22,6 +22,23 @@ export const removeFromCart = (productId) => {
   window.dispatchEvent(new Event('cart-updated'));
 };
 
+export const updateCartQuantity = (productId, delta) => {
+  const cart = getCart();
+  const item = cart.find(item => item.id === productId);
+  if (!item) return;
+  
+  item.quantity += delta;
+  
+  // 如果数量 <= 0，删除该商品
+  if (item.quantity <= 0) {
+    removeFromCart(productId);
+    return;
+  }
+  
+  localStorage.setItem('tailwag_cart', JSON.stringify(cart));
+  window.dispatchEvent(new Event('cart-updated'));
+};
+
 export const clearCart = () => {
   localStorage.removeItem('tailwag_cart');
   window.dispatchEvent(new Event('cart-updated'));

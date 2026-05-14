@@ -6,8 +6,8 @@
     "category": "极地冻干",
     "price": 29.9,
     "images": [
-      "https://images.unsplash.com/photo-1605641142589-9e8756d11e54?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1747577672081-991640ad50ce?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=1200&q=80"
     ],
     "sourcingUrl": "https://detail.1688.com/offer/731085025732.html",
     "selectionReason": "1688外贸工厂直供，通过VOHC及FDA认证。单一肉源低敏，牛磺酸含量是普通冻干的3.5倍。",
@@ -31,8 +31,8 @@
     "category": "智能硬件",
     "price": 89.0,
     "images": [
-      "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1584896257959-aadc311ac9b6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1643232070002-38be98f1224f?auto=format&fit=crop&w=1200&q=80"
     ],
     "sourcingUrl": "https://www.alibaba.com/product-detail/2025-Stylish-Dual-5G-Camera-Smart_1601452677201.html",
     "selectionReason": "Apple风格工业设计，5G双频WiFi连接。解决市面上自动喂食器连接不稳、卡粮严重的痛点。",
@@ -45,7 +45,9 @@
       { "label": "连接", "value": "Tuya Smart / HomeKit" },
       { "label": "材质", "value": "喷砂铝合金 + 304不锈钢" }
     ],
-    "reviews": []
+    "reviews": [
+      { "user": "CatMomNYC", "rating": 5, "comment": "Finally a feeder that actually works! Setup took 5 minutes and the app is super intuitive." }
+    ]
   },
   {
     "id": "zen-wooden-cat-tower",
@@ -54,8 +56,8 @@
     "category": "宠物家居",
     "price": 258.0,
     "images": [
-      "https://images.unsplash.com/photo-1638890425713-75704812a1f2?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1545249390-6bdfa286032f?auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1636676980996-f05cc9fc0652?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1545249390-6bdfa286032f?auto=format&fit=crop&w=1200&q=80"
     ],
     "sourcingUrl": "https://www.alibaba.com/product-detail/Modern-Luxury-Design-Premium-Cat-Tree_1601464057181.html",
     "selectionReason": "摒弃了传统地毯材质，改用泰国进口橡胶木。解决传统爬架难清理、易生虫、视觉廉价的问题。",
@@ -68,7 +70,9 @@
       { "label": "木材", "value": "泰国A级橡胶木" },
       { "label": "配件", "value": "纳米级太空舱" }
     ],
-    "reviews": []
+    "reviews": [
+      { "user": "FelineArchitect", "rating": 5, "comment": "My cats ignore all other cat trees but spend hours on this one. The wood quality is exceptional." }
+    ]
   },
   {
     "id": "ortho-cloud-bed-velvet",
@@ -77,8 +81,8 @@
     "category": "宠物家居",
     "price": 125.0,
     "images": [
-      "https://images.unsplash.com/photo-1518349619113-03114f06ac3a?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1591768793355-74d7cab7bd1f?auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1535126320463-c5c1b26b3e66?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1591768793355-74d7cab7bd1f?auto=format&fit=crop&w=1200&q=80"
     ],
     "sourcingUrl": "https://www.alibaba.com/product-detail/Top-Selling-Dog-Bed-for-Large_1600733831566.html",
     "selectionReason": "采用40D高密度慢回弹记忆棉，针对老龄犬及关节疾病犬设计。解决普通宠物床塌陷快、支撑力不足的问题。",
@@ -100,8 +104,8 @@
     "category": "宠物家居",
     "price": 68.0,
     "images": [
-      "https://images.unsplash.com/photo-1629898084813-f43b679f291e?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1615678815958-5910c6811c25?auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1646625034414-4de41a6e048c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1615678815958-5910c6811c25?auto=format&fit=crop&w=1200&q=80"
     ],
     "sourcingUrl": "https://www.alibaba.com/product-detail/Wooden-Elevated-Pet-Bowl-Stand-Ceramic_1601601091909.html",
     "selectionReason": "选用北美特级白橡木，搭配手工磨砂陶瓷盆。解决塑料碗易滋生细菌、陶瓷碗易打碎、普通木架易发霉的痛点。",
@@ -125,8 +129,8 @@
     "category": "户外出行",
     "price": 389.0,
     "images": [
-      "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1513360309081-38f07627399c?auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1573739802710-9169c11ae628?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513360309081-38f07627399c?auto=format&fit=crop&w=1200&q=80"
     ],
     "sourcingUrl": "https://www.alibaba.com/product-detail/Luxury-Pet-Stroller-Dog-Cat-Golden_1601314682601.html",
     "selectionReason": "航空级铝镁合金车架，单手一键收车。解决传统推车笨重、避震差、折叠复杂的痛点。",
@@ -140,5 +144,356 @@
       { "label": "自重", "value": "6.8kg (轻盈便携)" }
     ],
     "reviews": []
+  },
+  {
+    "id": "aqua-smart-fountain",
+    "name": "Aqua | 极简主义智能宠物饮水机",
+    "brand": "HydroFlow x TailWag",
+    "category": "智能硬件",
+    "price": 58.0,
+    "images": [
+      "https://images.unsplash.com/photo-1750712406219-549c4ba27210?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/2025-New-Arrival-Silent-Pet-Water_1601245678901.html",
+    "selectionReason": "无线水泵设计，水电分离。解决市面上饮水机难清洗、漏电风险及噪音大的痛点。",
+    "tag": "静音黑科技",
+    "margin": "550%",
+    "vocHighlights": ["无线水泵(清洗零死角)", "纳米银离子滤芯(长效抑菌)"],
+    "description": "流水不腐，智者无忧。Aqua 采用流体动力学设计，模拟山间活泉，激发宠物天生爱喝水的本能。超静音运行，守护每一个宁静的夜晚。",
+    "specs": [
+      { "label": "分贝", "value": "< 20dB (图书馆级静音)" },
+      { "label": "材质", "value": "食用级 ABS + 不锈钢" },
+      { "label": "续航", "value": "插电/电池双模供电" }
+    ],
+    "reviews": [
+      { "user": "HydrationHunter", "rating": 5, "comment": "My tabby used to ignore water bowls. Now she drinks constantly. Worth every penny!" }
+    ]
+  },
+  {
+    "id": "groom-pro-kit",
+    "name": "Groom | 专业级静音宠物理容套装",
+    "brand": "BladeMaster x TailWag",
+    "category": "护理用品",
+    "price": 149.0,
+    "images": [
+      "https://images.unsplash.com/photo-1633772403635-ff5ccb7b7b01?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Professional-Pet-Grooming-Clippers-Vacuum-Kit_1601345678901.html",
+    "selectionReason": "自带真空吸毛功能，边推边吸，解决家里毛发满天飞的痛点。陶瓷刀头不发烫，适合新手操作。",
+    "tag": "居家沙龙",
+    "margin": "400%",
+    "vocHighlights": ["强力吸毛(告别满屋飞毛)", "5合1全能刷头(全场景护理)"],
+    "description": "省下万元美容费。Groom 套装将专业沙龙体验搬进家中。强力吸附系统能捕捉 99% 的浮毛，让理容过程变得干净利落。",
+    "specs": [
+      { "label": "转速", "value": "12,000 RPM" },
+      { "label": "吸力", "value": "10kPA 飓风吸力" },
+      { "label": "噪音", "value": "低频降噪设计" }
+    ],
+    "reviews": []
+  },
+  {
+    "id": "voyage-luxury-carrier",
+    "name": "Voyage | 现代极简皮革宠物航空箱",
+    "brand": "Nomad x TailWag",
+    "category": "户外出行",
+    "price": 185.0,
+    "images": [
+      "https://images.unsplash.com/photo-1582456780653-aabf23f711b9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Luxury-Breathable-Cat-Carrier-Bag-Leather_1601445678901.html",
+    "selectionReason": "符合 IATA 国际航协标准，顶级荔枝纹素皮。解决传统塑料箱笨重难看、布艺包支撑差的痛点。",
+    "tag": "商务舱体验",
+    "margin": "380%",
+    "vocHighlights": ["多面通风(拒绝憋闷)", "三秒快拆结构(易存收)"],
+    "description": "像行李箱一样优雅。Voyage 是为那些经常带爱宠出行的旅行者准备的。它不仅是一个航空箱，更是一件精致的旅行配饰。",
+    "specs": [
+      { "label": "尺寸", "value": "45x30x30cm (登机尺寸)" },
+      { "label": "面料", "value": "高定环保素皮" },
+      { "label": "视窗", "value": "防爆抗拉扯尼龙网" }
+    ],
+    "reviews": [
+      { "user": "TravelWithPets", "rating": 5, "comment": "Took this on a flight to Tokyo. Airline staff complimented the design. Very sturdy and easy to clean." }
+    ]
+  },
+  {
+    "id": "spark-active-ball",
+    "name": "Spark | 智能交互自嗨球",
+    "brand": "PlayBot x TailWag",
+    "category": "智能硬件",
+    "price": 35.0,
+    "images": [
+      "https://images.unsplash.com/photo-1653480534591-99a5e8752e32?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Smart-Interactive-Dog-Toy-Ball-Automatic_1601545678901.html",
+    "selectionReason": "AI 避障算法，多种弹跳模式。解决主人不在家时宠物无聊、焦虑导致的拆家行为。",
+    "tag": "陪玩神器",
+    "margin": "600%",
+    "vocHighlights": ["10小时超长续航", "天然食品级硅胶外层"],
+    "description": "它是宠物不在家时的忠实玩伴。Spark 能够感应宠物的动作并作出实时反馈，随机的滚动路径让捕猎天性得到充分释放。",
+    "specs": [
+      { "label": "模式", "value": "温柔 / 疯狂 / 自动切换" },
+      { "label": "直径", "value": "45mm (黄金比例)" },
+      { "label": "外壳", "value": "抗咬环保硅胶" }
+    ],
+    "reviews": []
+  },
+  {
+    "id": "arctic-pure-chicken-breast",
+    "name": "Arctic Pure | 极地鸡胸肉冻干零食",
+    "brand": "PureNature x TailWag",
+    "category": "极地冻干",
+    "price": 19.9,
+    "images": [
+      "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Freeze-Dried-Chicken-Breast-Pet-Treats_1601452677202.html",
+    "selectionReason": "零下40度极地环境养殖，无抗生素、无添加。单一鸡肉成分，低敏配方，适合各年龄段犬猫。",
+    "tag": "零食首选",
+    "margin": "680%",
+    "vocHighlights": ["SGS检测零添加(安全保证)", "开袋即食复水两用"],
+    "description": "每一块都是整片鸡大胸，非碎肉拼接。冻干工艺锁住98%营养，让挑食的毛孩子也无法抗拒这份来自极地的纯粹。",
+    "specs": [
+      { "label": "原料", "value": "100% 极地鸡胸肉" },
+      { "label": "规格", "value": "100g / 200g 可选" },
+      { "label": "适用", "value": "犬猫通用 / 幼年/成年/老年" }
+    ],
+    "reviews": [
+      { "user": "PickyEaterWhisperer", "rating": 5, "comment": "My notoriously picky Pomeranian finally has a treat she loves! The freeze-drying really preserves the flavor." }
+    ]
+  },
+  {
+    "id": "arctic-ocean-fish-main",
+    "name": "Arctic Ocean | 极地三文鱼Omega美毛主食冻干",
+    "brand": "PureNature x TailWag",
+    "category": "极地冻干",
+    "price": 39.9,
+    "images": [
+      "https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Freeze-Dried-Salmon-Pet-Food-Main-Meal_1601452677203.html",
+    "selectionReason": "北极圈纯净海域野生捕捞，Omega-3含量是普通鱼类的3倍。长期食用可显著改善毛发枯燥、掉毛严重的问题。",
+    "tag": "美毛必备",
+    "margin": "620%",
+    "vocHighlights": ["野生深海鱼(零污染)", "EPA+DHA双效配方(美毛护脑)"],
+    "description": "来自北极的深海馈赠。Arctic Ocean 选用北极圈野生三文鱼，富含天然Omega-3不饱和脂肪酸，长期食用让爱宠毛发柔顺亮泽，从内而外散发健康光彩。",
+    "specs": [
+      { "label": "原料", "value": "100% 野生北极三文鱼" },
+      { "label": "Omega-3", "value": "> 15%" },
+      { "label": "适用", "value": "犬猫通用 / 美毛需求" }
+    ],
+    "reviews": []
+  },
+  {
+    "id": "gut-well-probiotic-paste",
+    "name": "GutWell | 犬猫专用益生菌营养膏",
+    "brand": "NutriCare x TailWag",
+    "category": "护理用品",
+    "price": 45.0,
+    "images": [
+      "https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Probiotic-Nutrient-Paste-for-Pets_1601452677204.html",
+    "selectionReason": "特别添加布拉氏酵母菌等5种活性菌种，100亿CFU高活性。改善宠物软便、腹泻、肠胃敏感等常见问题。",
+    "tag": "肠胃调理",
+    "margin": "550%",
+    "vocHighlights": ["即食膏剂(喂食方便)", "专用犬猫菌株(非人用益生菌)"],
+    "description": "把宠物肠道健康交给科学。GutWell 采用宠物专用益生菌配方，高活性直达肠道，见效快。换粮期、旅行应激期必备，帮助爱宠告别肠胃不适。",
+    "specs": [
+      { "label": "活性菌", "value": "100亿 CFU/袋" },
+      { "label": "菌种", "value": "5种宠物专用活性菌" },
+      { "label": "规格", "value": "15g x 10支/盒" }
+    ],
+    "reviews": [
+      { "user": "SensitiveStomachClub", "rating": 5, "comment": "My French Bulldog has always had digestive issues. After using this for 2 weeks, no more stomach upsets!" }
+    ]
+  },
+  {
+    "id": "dent-fresh-toothbrush-kit",
+    "name": "DentFresh | 宠物超声波电动牙刷套装",
+    "brand": "PetDental x TailWag",
+    "category": "护理用品",
+    "price": 69.0,
+    "images": [
+      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Electric-Toothbrush-Set-for-Pets_1601452677205.html",
+    "selectionReason": "超声波技术比普通物理刷牙清洁效率提升3倍，预防牙结石、牙周病。配有LED口腔检测灯，实时查看牙齿健康。",
+    "tag": "口腔健康",
+    "margin": "480%",
+    "vocHighlights": ["超声波高频震动(清洁无死角)", "LED口腔检测灯(发现问题早)"],
+    "description": "口腔健康是宠物长寿的关键。DentFresh 采用医用级超声波技术，每分钟12000次高频震动，搭配柔软硅胶刷头，轻松清除牙菌斑，让爱宠拥有健康好牙。",
+    "specs": [
+      { "label": "震动频率", "value": "12,000 次/分钟" },
+      { "label": "刷头", "value": "食品级硅胶柔软刷头" },
+      { "label": "防水", "value": "IPX7全身防水" }
+    ],
+    "reviews": []
+  },
+  {
+    "id": "clean-bot-smart-litter",
+    "name": "CleanBot | 全自动智能猫砂盆",
+    "brand": "TechPet x TailWag",
+    "category": "智能硬件",
+    "price": 299.0,
+    "images": [
+      "https://images.unsplash.com/photo-1529778873920-4da4926a72c2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1494256997604-768d688b1bb0?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Smart-Litter-Box-Auto-Cleaning_1601452677206.html",
+    "selectionReason": "AI智能感应，猫咪离开后自动清理。配备除臭模块和抑菌灯，7天不用倒猫砂。解决多猫家庭频繁铲屎的痛苦。",
+    "tag": "懒人必备",
+    "margin": "280%",
+    "vocHighlights": ["AI感应识别(防止误清理)", "等离子除臭(根源去味)"],
+    "description": "彻底告别铲屎焦虑。CleanBot 搭载AI视觉识别系统，准确区分猫咪与杂物，离开后自动启动清理程序。配合等离子除臭技术，7天无需倒砂，假期出行无压力。",
+    "specs": [
+      { "label": "容量", "value": "6L (可容纳7天用量)" },
+      { "label": "除臭", "value": "等离子+活性炭双重除臭" },
+      { "label": "安全", "value": "12重安全保护" }
+    ],
+    "reviews": [
+      { "user": "MultiCatMama", "rating": 5, "comment": "Game changer for our 3-cat household! The app tracks each cat's usage. No more smelling the litter box." }
+    ]
+  },
+  {
+    "id": "tunnel-den-play-tunnel",
+    "name": "TunnelDen | 多功能猫咪隧道帐篷",
+    "brand": "EcoHome x TailWag",
+    "category": "宠物家居",
+    "price": 89.0,
+    "images": [
+      "https://images.unsplash.com/photo-1529778873920-4da4926a72c2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1494256997604-768d688b1bb0?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Cat-Tunnel-Tent-Playground_1601452677207.html",
+    "selectionReason": "结合隧道+帐篷双重设计，猫咪可钻可躺。解决猫咪喜欢钻纸袋/纸箱但又不耐用的痛点，提供专属私密空间。",
+    "tag": "隐私空间",
+    "margin": "450%",
+    "vocHighlights": ["可拆洗面料(反复使用)", "内置响纸/羽毛玩具(自嗨不停)"],
+    "description": "给猫咪一个专属的秘密基地。TunnelDen 将猫咪最爱的隧道与帐篷合二为一，柔软亲肤面料搭配内置玩具，让猫咪沉浸在自己的小世界里，既满足狩猎本能，又给予安全感。",
+    "specs": [
+      { "label": "材质", "value": "加厚加密龙眼绒" },
+      { "label": "尺寸", "value": "展开80x50cm" },
+      { "label": "配件", "value": "响纸+羽毛逗猫棒" }
+    ],
+    "reviews": []
+  },
+  {
+    "id": "safe-ride-pet-seatbelt",
+    "name": "SafeRide | 车载宠物安全带",
+    "brand": "UrbanVoyage x TailWag",
+    "category": "宠物家居",
+    "price": 49.0,
+    "images": [
+      "https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Pet-Car-Seatbelt-Safety-Harness_1601452677208.html",
+    "selectionReason": "紧急制动时有效保护宠物安全，缓冲减震织带不勒脖。可调节设计适配各种体型，解决宠物车内乱窜的安全隐患。",
+    "tag": "出行安全",
+    "margin": "580%",
+    "vocHighlights": ["三点式固定(防止飞出)", "紧急锁止织带(瞬间响应)"],
+    "description": "带宠物出行，安全是第一位。SafeRide 采用赛车级安全带原理，紧急制动时瞬间锁止，将冲击力分散至全身，有效保护爱宠安全。让每一次自驾出行都安心无忧。",
+    "specs": [
+      { "label": "材质", "value": "高强度锦纶织带" },
+      { "label": "锁止", "value": "15kN级机械锁止" },
+      { "label": "承重", "value": "适用于5-30kg宠物" }
+    ],
+    "reviews": []
+  },
+  {
+    "id": "venture-pet-backpack",
+    "name": "Venture | 透气缓震宠物背包",
+    "brand": "Nomad x TailWag",
+    "category": "户外出行",
+    "price": 128.0,
+    "images": [
+      "https://images.unsplash.com/photo-1598133890090-9ce58b4b6a2e?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Pet-Backpack-Carrier-Breathable_1601452677209.html",
+    "selectionReason": "专为户外徒步设计，铝框支撑背负稳固，内置安全绳防止宠物意外逃脱。可视透气网布减少宠物焦虑感。",
+    "tag": "户外探险",
+    "margin": "420%",
+    "vocHighlights": ["人体工学背负系统(久背不累)", "透视网布(减少焦虑)"],
+    "description": "带上毛孩子一起探索世界。Venture 背包采用人体工学设计，铝框支撑系统让背负稳固舒适。透气网布保持内部空气流通，内置安全绳+防逃脱锁扣，户外出行必备。",
+    "specs": [
+      { "label": "材质", "value": "Ripstop防撕裂面料" },
+      { "label": "背负", "value": "人体工学铝框支撑" },
+      { "label": "容量", "value": "可容纳5kg以下宠物" }
+    ],
+    "reviews": [
+      { "user": "HikingWithBuddy", "rating": 5, "comment": "My corgi and I have been on 10+ hikes with this pack. Very comfortable for both of us and great ventilation." }
+    ]
+  },
+  {
+    "id": "trekker-hiking-leash",
+    "name": "Trekker | 户外专业宠物牵引绳套装",
+    "brand": "Nomad x TailWag",
+    "category": "户外出行",
+    "price": 79.0,
+    "images": [
+      "https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Heavy-Duty-Pet-Trekking-Leash_1601452677210.html",
+    "selectionReason": "多挂点设计适配不同场景，反光材质夜间可视，弹簧减震系统保护手腕。解决普通牵引绳不适合户外运动的问题。",
+    "tag": "户外专业",
+    "margin": "500%",
+    "vocHighlights": ["弹簧减震系统(保护手腕)", "7合1多功能挂点"],
+    "description": "专业户外玩家的装备升级。Trekker 套装包含牵引绳+手柄+腰包组合，弹簧减震系统有效缓冲宠物突然拉扯带来的伤害。夜间反光设计让夜跑更安全，多功能挂点满足各种场景需求。",
+    "specs": [
+      { "label": "长度", "value": "1.8m (含弹簧拉伸)" },
+      { "label": "材质", "value": "550 paracord军用级绳芯" },
+      { "label": "配件", "value": "腰包+荧光棒+储物袋" }
+    ],
+    "reviews": []
+  },
+  {
+    "id": "spa-station-grooming-tub",
+    "name": "SpaStation | 折叠式专业宠物洗澡台",
+    "brand": "GroomPro x TailWag",
+    "category": "美容护理",
+    "price": 199.0,
+    "images": [
+      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Folding-Pet-Grooming-Bath-Tub_1601452677211.html",
+    "selectionReason": "台面高度符合人体工学，减少弯腰；底部防滑硅胶垫防止宠物打滑。折叠收纳设计，小浴室也能放下。解决家庭洗澡弯腰累、宠物抗拒的问题。",
+    "tag": "沐浴升级",
+    "margin": "350%",
+    "vocHighlights": ["三档高度调节(适配不同身高)", "台面下水管直排(不溅水)"],
+    "description": "把宠物SPA馆搬回家。SpaStation 专为家庭宠物沐浴设计，人体工学高度让你不再腰酸背痛。防滑台面+安全绑带让宠物安心配合，折叠后可立在墙角，不占空间。",
+    "specs": [
+      { "label": "材质", "value": "加厚304不锈钢盆体" },
+      { "label": "承重", "value": "50kg" },
+      { "label": "收纳", "value": "折叠尺寸 60x20x10cm" }
+    ],
+    "reviews": [
+      { "user": "HomeGroomerPro", "rating": 5, "comment": "Bathing my golden retriever used to be a nightmare. Now she actually stays calm on the table. Worth every penny!" }
+    ]
+  },
+  {
+    "id": "zen-scent-aromatherapy",
+    "name": "ZenScent | 宠物专用舒缓香薰精油套装",
+    "brand": "PetAroma x TailWag",
+    "category": "美容护理",
+    "price": 59.0,
+    "images": [
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "sourcingUrl": "https://www.alibaba.com/product-detail/Pet-Safe-Aromatherapy-Essential-Oil-Set_1601452677212.html",
+    "selectionReason": "特别调配宠物友好的精油配方，薰衣草+洋甘菊双效舒缓。帮助缓解宠物分离焦虑、鞭炮恐惧、外出应激等情绪问题。",
+    "tag": "情绪舒缓",
+    "margin": "700%",
+    "vocHighlights": ["宠物专用配方(安全无毒)", "扩散+喷雾双用"],
+    "description": "用自然的力量抚平毛孩子的情绪。ZenScent 采用纯天然植物精油，专门针对宠物嗅觉敏感度调配。薰衣草舒缓焦虑、洋甘菊安抚神经，让胆小的宠物也能享受宁静。",
+    "specs": [
+      { "label": "容量", "value": "30ml x 2瓶" },
+      { "label": "成分", "value": "薰衣草+罗马洋甘菊" },
+      { "label": "用法", "value": "香薰机/直接喷雾" }
+    ],
+    "reviews": [
+      { "user": "AnxiousPuppyMom", "rating": 5, "comment": "During thunderstorms my dog used to shake uncontrollably. With ZenScent running, she's so much calmer. Life saver!" }
+    ]
   }
 ]

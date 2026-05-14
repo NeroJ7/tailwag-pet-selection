@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
+import MobileNav from '../components/MobileNav';
 
 const BrandRecruitment = () => {
   const criteria = [
@@ -21,63 +22,69 @@ const BrandRecruitment = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-brand-cream selection:bg-brand-orange selection:text-white pb-20 md:pb-0">
       <Navbar />
       
       <main>
         {/* Hero Section */}
-        <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
+        <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
-              src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=1920&q=80" 
-              className="w-full h-full object-cover brightness-[0.4]" 
+              src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=1920&q=80" 
+              className="w-full h-full object-cover brightness-[0.6]" 
               alt="Partnership" 
             />
+            <div className="absolute inset-0 bg-brand-charcoal/30"></div>
           </div>
-          <div className="relative z-10 text-center px-6">
-            <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
-              寻找下一个 <span className="text-orange-500 italic">“优选”</span> 品牌
+          <div className="relative z-10 text-center px-6 max-w-4xl">
+            <span className="text-xs font-black uppercase tracking-[0.5em] text-brand-orange mb-8 block">Partner With Us</span>
+            <h1 className="text-5xl md:text-[100px] font-black text-white mb-10 tracking-tighter leading-[0.85]">
+              寻找下一个 <span className="title-serif text-brand-orange italic">“优选”</span> 品牌
             </h1>
-            <p className="text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed">
-              TailWag (摇尾精选) 诚邀全球优质宠物品牌加入我们的行列。
-              在这里，我们不只是在销售产品，更是在共同建立一种高品质的养宠生活方式。
+            <p className="text-xl text-white/80 font-medium leading-loose">
+              TailWag (摇尾精选) 诚邀全球优质宠物品牌加入我们的行列。在这里，我们不只是在销售产品，更是在共同建立一种高品质的养宠生活方式。
             </p>
           </div>
         </section>
 
         {/* Why Join Section */}
-        <section className="py-24 max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+        <section className="py-40 max-w-7xl mx-auto px-6 md:px-12">
+          <div className="grid lg:grid-cols-2 gap-24 items-center">
             <div>
-              <h2 className="text-4xl font-black text-gray-900 mb-8 tracking-tight">
-                为什么选择与 <br />
-                <span className="text-orange-500">TailWag</span> 合作？
+              <span className="text-xs font-black uppercase tracking-[0.4em] text-brand-orange mb-6 block">Why TailWag?</span>
+              <h2 className="text-5xl md:text-6xl font-black text-brand-charcoal mb-10 tracking-tighter leading-tight">
+                为什么选择与<br />
+                <span className="title-serif text-brand-orange">TailWag</span> 合作？
               </h2>
-              <ul className="space-y-6">
+              <div className="space-y-12 mt-16">
                 {[
-                  { q: "精准客群", a: "直达全球数百万追求品质生活的“新一代”养宠家庭。" },
-                  { q: "品牌溢价", a: "入驻 TailWag 意味着您的产品已通过最严苛的行业筛选标准。" },
-                  { q: "内容赋能", a: "我们的专业团队将为入驻品牌制作深度测评及多维度传播内容。" }
+                  { q: "精准客群", a: "直达全球数百万追求品质生活的“新一代”养宠家庭。我们的用户不只是购买者，更是生活方式的信徒。" },
+                  { q: "品牌溢价", a: "入驻 TailWag 意味着您的产品已通过最严苛的行业筛选标准。我们为品牌提供稀缺的背书价值。" },
+                  { q: "内容赋能", a: "我们的专业团队将为入驻品牌制作深度测评及多维度传播内容，讲好每一个品牌背后的故事。" }
                 ].map((item, i) => (
-                  <li key={i} className="flex space-x-4">
-                    <div className="flex-shrink-0 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs">✓</div>
-                    <div>
-                      <h4 className="font-bold text-gray-900">{item.q}</h4>
-                      <p className="text-gray-500 text-sm mt-1">{item.a}</p>
+                  <div key={i} className="flex space-x-8">
+                    <div className="flex-shrink-0 w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center text-brand-orange font-black text-xl">
+                      {i + 1}
                     </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="bg-gray-50 rounded-3xl p-10 border border-gray-100 shadow-inner">
-              <h3 className="text-2xl font-bold mb-6">入驻标准</h3>
-              <div className="space-y-8">
-                {criteria.map((item, index) => (
-                  <div key={index} className="flex items-start space-x-4">
-                    <div className="text-3xl">{item.icon}</div>
                     <div>
-                      <h4 className="font-bold text-gray-900 mb-1">{item.title}</h4>
-                      <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                      <h4 className="text-xl font-black text-brand-charcoal mb-3">{item.q}</h4>
+                      <p className="text-brand-stone text-sm leading-loose font-medium">{item.a}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-[4rem] p-16 shadow-premium border border-stone-50 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-brand-orange/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+              <h3 className="text-2xl font-black text-brand-charcoal mb-12 tracking-tight italic">入驻准则 (Protocol)</h3>
+              <div className="space-y-12">
+                {criteria.map((item, index) => (
+                  <div key={index} className="flex items-start space-x-8">
+                    <div className="text-4xl">{item.icon}</div>
+                    <div>
+                      <h4 className="text-lg font-black text-brand-charcoal mb-2 uppercase tracking-wide">{item.title}</h4>
+                      <p className="text-brand-stone text-xs leading-loose font-medium">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -86,56 +93,59 @@ const BrandRecruitment = () => {
           </div>
         </section>
 
-        {/* Application Form Mockup */}
-        <section className="bg-orange-50 py-24 px-6">
-          <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
-            <div className="p-10 md:p-16">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-black text-gray-900 mb-4">立即提交合作意向</h2>
-                <p className="text-gray-400">请填写基础信息，我们的选品团队将在 3 个工作日内回复您</p>
-              </div>
-              
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">品牌名称</label>
-                    <input type="text" className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 transition" placeholder="例如: TailWag" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">所属国家/地区</label>
-                    <input type="text" className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 transition" placeholder="例如: 中国" />
-                  </div>
+        {/* Application Form */}
+        <section className="bg-brand-charcoal py-40 px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-24">
+              <h2 className="text-5xl font-black text-white mb-8 tracking-tighter">提交合作<span className="title-serif text-brand-orange">意向</span></h2>
+              <p className="text-stone-400 font-medium">请填写基础信息，我们的选品委员会将在 3 个工作日内进行初步审核。</p>
+            </div>
+            
+            <form onSubmit={(e) => { e.preventDefault(); alert('申请已提交，请等待委员会审核。'); }} className="grid md:grid-cols-2 gap-12">
+              <div className="space-y-8">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-orange mb-4">品牌名称 / Brand Name</label>
+                  <input required type="text" className="w-full bg-white/5 border-b border-white/20 py-4 px-0 text-white focus:border-brand-orange focus:ring-0 transition-all placeholder:text-stone-700 font-black text-sm" placeholder="NAME" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">主营品类</label>
-                  <select className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 transition">
-                    <option>智能用品</option>
-                    <option>食品/零食</option>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-orange mb-4">主营品类 / Category</label>
+                  <select className="w-full bg-transparent border-b border-white/20 py-4 px-0 text-stone-400 focus:border-brand-orange focus:ring-0 transition-all font-black text-sm uppercase">
+                    <option>智能硬件</option>
+                    <option>极地冻干</option>
                     <option>宠物家居</option>
-                    <option>洗护/清洁</option>
-                    <option>其他</option>
+                    <option>户外出行</option>
+                    <option>其他创新</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">联系人姓名及电话</label>
-                  <input type="text" className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 transition" placeholder="请输入您的联系方式" />
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-orange mb-4">联系邮箱 / Email</label>
+                  <input required type="email" className="w-full bg-white/5 border-b border-white/20 py-4 px-0 text-white focus:border-brand-orange focus:ring-0 transition-all placeholder:text-stone-700 font-black text-sm" placeholder="EMAIL" />
                 </div>
+              </div>
+              <div className="space-y-8">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">品牌简介 / 产品亮点</label>
-                  <textarea className="w-full px-4 py-3 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 transition h-32" placeholder="请简要介绍您的品牌及核心竞争力..."></textarea>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-orange mb-4">品牌亮点 / Brand Values</label>
+                  <textarea required className="w-full bg-white/5 border-b border-white/20 py-4 px-0 text-white focus:border-brand-orange focus:ring-0 transition-all placeholder:text-stone-700 font-black text-sm h-[208px] resize-none" placeholder="DESCRIBE YOUR INNOVATION..."></textarea>
                 </div>
-                <button className="w-full bg-gray-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-orange-500 shadow-lg transition-all">
-                  提交申请
+              </div>
+              
+              <div className="md:col-span-2 pt-12">
+                <button type="submit" className="w-full bg-brand-orange text-white py-10 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:bg-white hover:text-brand-charcoal transition-all shadow-xl">
+                  提交申请 — Send Request &rarr;
                 </button>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </section>
       </main>
 
-      <footer className="py-12 text-center text-gray-400 text-sm">
-        TailWag 选品团队联系方式: <span className="text-orange-500 underline font-bold">brands@tailwag.com</span>
+      <footer className="py-20 text-center bg-brand-cream border-t border-stone-100">
+        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-brand-stone">
+          TailWag Curation Committee: <a href="mailto:brands@tailwag.com" className="text-brand-orange hover:underline ml-2">brands@tailwag.com</a>
+        </p>
       </footer>
+
+      <MobileNav />
     </div>
   );
 };
