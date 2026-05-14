@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
+
+const PayPalButton = dynamic(() => import('../../components/PayPalButton'), { ssr: false });
 
 interface OrderItem {
   id: string;
@@ -256,22 +259,38 @@ export default function OrderDetailPage() {
               <p className="text-[10px] font-black uppercase tracking-widest text-brand-stone mb-2">
                 选择支付方式
               </p>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => handlePay('alipay')}
-                  disabled={paying}
-                  className="flex-1 bg-[#1677FF] text-white py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#0056D4] transition-all duration-500 hover:-translate-y-1 active:scale-95 disabled:opacity-50"
-                >
-                  {paying ? '跳转中...' : '支付宝支付'}
-                </button>
-                <button
-                  onClick={() => handlePay('wechat_pay')}
-                  disabled={paying}
-                  className="flex-1 bg-[#07C160] text-white py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#06AD56] transition-all duration-500 hover:-translate-y-1 active:scale-95 disabled:opacity-50"
-                >
-                  {paying ? '处理中...' : '微信支付（模拟）'}
-                </button>
+              {/* 支付宝 */}
+              <button
+                onClick={() => handlePay('alipay')}
+                disabled={paying}
+                className="w-full bg-[#1677FF] text-white py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#0056D4] transition-all duration-500 hover:-translate-y-1 active:scale-95 disabled:opacity-50"
+              >
+                {paying ? '跳转中...' : '支付宝支付 Alipay'}
+              </button>
+              {/* PayPal */}
+              <div className="bg-white rounded-2xl p-4 border border-stone-100">
+                <PayPalButton
+                  orderId={order.id}
+                  totalAmount={order.total_amount}
+                  onSuccess={() => {
+                    setPaying(false);
+                    alert('PayPal 支付成功！');
+                    fetchOrder();
+                  }}
+                  onError={(msg) => {
+                    setPaying(false);
+                    alert(msg);
+                  }}
+                />
               </div>
+              {/* 微信支付（模拟） */}
+              <button
+                onClick={() => handlePay('wechat_pay')}
+                disabled={paying}
+                className="w-full bg-[#07C160] text-white py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#06AD56] transition-all duration-500 hover:-translate-y-1 active:scale-95 disabled:opacity-50"
+              >
+                {paying ? '处理中...' : '微信支付（模拟）'}
+              </button>
               <button
                 onClick={handleCancel}
                 className="w-full border-2 border-red-200 text-red-500 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-red-50 transition-all duration-500"
