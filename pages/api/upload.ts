@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./auth/[...nextauth]";
+import { put } from "@vercel/blob";
 import formidable from "formidable";
-import fs from "fs";
-import path from "path";
 
 // 禁用默认的 body parser，因为我们要处理文件上传
 export const config = {
@@ -11,12 +10,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
-// 确保上传目录存在
-const uploadDir = path.join(process.cwd(), "public", "uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -31,8 +24,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const form = formidable({
-      uploadDir,
-      keepExtensions: true,
       maxFileSize: 5 * 1024 * 1024, // 5MB
       filter: (part) => {
         // 只接受图片文件
@@ -47,23 +38,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: "没有上传文件" });
     }
 
+    // 读取文件内容
+    const fs = await import("fs/promises");
+    const fileBuffer = await fs.readFile(file.filepath);
+
     // 生成唯一的文件名
-    const ext = path.extname(file.originalFilename || "");
+    const originalName = file.originalFilename || "unknown";
+    const ext = originalName.split('.').pop() || 'jpg';
     const timestamp = Date.now();
     const random = Math.random().toString(36).substring(2, 8);
-    const newFilename = `pet_${timestamp}_${random}${ext}`;
-    const newPath = path.join(uploadDir, newFilename);
+    const filename = `pet_${timestamp}_${random}.${ext}`;
 
-    // 重命名文件
-    fs.renameSync(file.filepath, newPath);
+    // 上传到 Vercel Blob
+    const blob = await put(filename, fileBuffer, {
+      access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
 
-    // 返回文件URL
-    const fileUrl = `/uploads/${newFilename}`;
-
+    // 返回 Blob URL
     return res.status(200).json({
       success: true,
-      url: fileUrl,
-      filename: newFilename,
+      url: blob.url,
+      filename: filename,
     });
   } catch (err: any) {
     console.error("上传文件失败:", err);
