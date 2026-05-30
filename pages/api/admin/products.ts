@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import { query } from "../../../lib/db";
+import { withRateLimit } from "../../../lib/rate-limit";
 
 // 检查是否是管理员
 async function isAdmin(req: NextApiRequest, res: NextApiResponse) {
@@ -16,7 +17,7 @@ async function isAdmin(req: NextApiRequest, res: NextApiResponse) {
   return adminEmails.includes(session.user.email);
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!(await isAdmin(req, res))) {
     return res.status(403).json({ error: "无权限访问" });
   }
@@ -158,3 +159,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   return res.status(405).json({ error: "Method not allowed" });
 }
+
+// 导出 handler（用 withRateLimit 包装）
+export default withRateLimit(handler, 'admin');

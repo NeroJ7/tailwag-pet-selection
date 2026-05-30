@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import { query } from "../../../lib/db";
+import { withRateLimit } from "../../../lib/rate-limit";
 
 // 获取当前登录用户
 async function getSessionUser(req: NextApiRequest, res: NextApiResponse) {
@@ -25,7 +26,7 @@ function generateOrderNumber(): string {
   return `TW${timestamp}${random}`;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const userId = await getSessionUser(req, res);
 
   if (!userId) {
@@ -76,29 +77,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-      // 计算订单总金额
+      // 优化：一次性查询所有商品（修复 N+1 问题）
+      const productIds = items.map((item: any) => item.productId);
+      const placeholders = productIds.map((_: any, idx: number) => `$${idx + 1}`).join(',');
+      const productResult = await query(
+        `SELECT id, name, price FROM "products" WHERE id IN (${placeholders}) AND is_active = true`,
+        productIds
+      );
+
+      if (productResult.rows.length !== items.length) {
+        return res.status(400).json({ error: '部分商品不存在或已下架' });
+      }
+
+      // 将商品信息映射到 item 中
+      const productMap = new Map(productResult.rows.map((p: any) => [p.id, p]));
       let totalAmount = 0;
       const orderItems = [];
 
       for (const item of items) {
-        const productResult = await query(
-          'SELECT id, name, price FROM "products" WHERE id = $1 AND is_active = true',
-          [item.productId]
-        );
-
-        if (productResult.rows.length === 0) {
+        const product = productMap.get(item.productId) as any;
+        if (!product) {
           return res.status(400).json({ error: `商品不存在: ${item.productId}` });
         }
 
-        const product = productResult.rows[0];
         const quantity = item.quantity || 1;
-        const itemPrice = parseFloat(product.price) * quantity;
+        const itemPrice = parseFloat((product as any).price) * quantity;
         totalAmount += itemPrice;
 
         orderItems.push({
           productId: product.id,
           quantity: quantity,
-          price: product.price,
+          price: (product as any).price,
         });
       }
 
@@ -152,3 +161,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   return res.status(405).json({ error: "Method not allowed" });
 }
+
+export default withRateLimit(handler, 'createOrder');

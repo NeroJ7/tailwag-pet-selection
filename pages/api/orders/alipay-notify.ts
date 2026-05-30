@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { query } from "../../../lib/db";
+import { withRateLimit } from "../../../lib/rate-limit";
 
 // 动态导入支付宝 SDK
 let AlipaySdk: any = null;
@@ -29,7 +30,7 @@ function getAlipaySdk() {
   });
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).send("Method not allowed");
   }

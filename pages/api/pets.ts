@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./auth/[...nextauth]";
 import { query } from "../../lib/db";
+import { withRateLimit } from "../../lib/rate-limit";
 
 // 获取当前登录用户
 async function getSessionUser(req: NextApiRequest, res: NextApiResponse) {
@@ -19,7 +20,7 @@ async function getSessionUser(req: NextApiRequest, res: NextApiResponse) {
   return result.rows[0]?.id || null;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   // 获取当前用户
   const userId = await getSessionUser(req, res);
   

@@ -2,6 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import { query } from "../../../lib/db";
+import { verifyCsrfToken, getCsrfTokenFromRequest } from "../../../lib/csrf";
+import { createWechatPay } from "../../../lib/wechat-pay";
+import { withRateLimit } from "../../../lib/rate-limit";
 
 // 动态导入支付宝 SDK（避免未配置时报错）
 let AlipaySdk: any = null;
@@ -88,11 +91,11 @@ async function createAlipayOrder(order: any, returnUrl: string) {
     };
   } catch (err: any) {
     console.error("支付宝下单失败:", err);
-    return { success: false, error: err.message };
+    return { success: false, error: "支付宝下单失败，请稍后重试" };
   }
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const userId = await getSessionUser(req, res);
 
   if (!userId) {
@@ -164,28 +167,96 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           });
         }
 
-        return res.status(400).json({ error: payResult.error || "支付宝下单失败" });
+        return res.status(400).json({ error: "支付宝下单失败，请稍后重试" });
       }
 
-      // 微信支付 / 模拟支付
-      const paymentResult = await simulatePayment(orderId, paymentMethod, order.total_amount);
+      // 微信支付
+      if (paymentMethod === "wechat_pay") {
+        const wechatPay = createWechatPay();
 
-      await query(
-        `UPDATE "orders" SET
-          status = $1,
-          payment_id = $2,
-          payment_method = $3,
-          paid_at = NOW(),
-          updated_at = NOW()
-        WHERE id = $4`,
-        ["paid", paymentResult.paymentId, paymentMethod, orderId]
-      );
+        // 未配置微信支付，回退到模拟支付
+        if (!wechatPay) {
+          console.log("微信支付未配置，使用模拟支付");
+          const paymentResult = await simulatePayment(orderId, "wechat_pay(sandbox)", order.total_amount);
+          
+          await query(
+            `UPDATE "orders" SET
+              status = $1,
+              payment_id = $2,
+              payment_method = $3,
+              paid_at = NOW(),
+              updated_at = NOW()
+            WHERE id = $4`,
+            ["paid", paymentResult.paymentId, "wechat_pay(sandbox)", orderId]
+          );
 
-      return res.status(200).json({
-        success: true,
-        message: paymentMethod === "wechat_pay" ? "微信支付成功（模拟）" : "支付成功",
-        payment: paymentResult,
-      });
+          return res.status(200).json({
+            success: true,
+            message: "微信支付成功（模拟，未配置真实微信支付）",
+            sandbox: true,
+            payment: paymentResult,
+          });
+        }
+
+        // 真实微信支付：统一下单（Native 支付，返回二维码）
+        try {
+          const notifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/orders/wechat-notify`;
+          const amountInCents = Math.round(parseFloat(order.total_amount) * 100); // 转换为分
+
+          const payResult = await wechatPay.unifiedOrder({
+            orderNumber: order.order_number,
+            description: `TailWag 订单 #${order.order_number}`,
+            amount: amountInCents,
+            notifyUrl: notifyUrl,
+            tradeType: 'NATIVE', // 扫码支付
+          });
+
+          if (payResult.return_code === 'SUCCESS' && payResult.result_code === 'SUCCESS') {
+            // 返回二维码链接给前端
+            return res.status(200).json({
+              success: true,
+              paymentMethod: "wechat_pay",
+              codeUrl: payResult.code_url, // 二维码链接
+              orderNumber: order.order_number,
+              message: "请使用微信扫描二维码完成支付",
+            });
+          } else {
+            console.error("微信支付下单失败:", payResult.err_code_des);
+            return res.status(400).json({ 
+              error: `微信支付下单失败: ${payResult.err_code_des || '未知错误'}` 
+            });
+          }
+        } catch (err: any) {
+          console.error("微信支付下单异常:", err);
+          return res.status(500).json({ error: "微信支付下单异常，请稍后重试" });
+        }
+      }
+
+      // 模拟支付（sandbox）
+      if (paymentMethod === "sandbox") {
+        const paymentResult = await simulatePayment(orderId, paymentMethod, order.total_amount);
+        
+        await query(
+          `UPDATE "orders" SET
+            status = $1,
+            payment_id = $2,
+            payment_method = $3,
+            paid_at = NOW(),
+            updated_at = NOW()
+          WHERE id = $4`,
+          ["paid", paymentResult.paymentId, paymentMethod, orderId]
+        );
+
+        return res.status(200).json({
+          success: true,
+          message: "模拟支付成功",
+          sandbox: true,
+          payment: paymentResult,
+        });
+      }
+
+      // 不支持的支付方式
+      return res.status(400).json({ error: "不支持的支付方式" });
     } catch (err: any) {
       console.error("支付订单失败:", err);
       return res.status(500).json({ error: "支付订单失败" });
@@ -194,3 +265,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   return res.status(405).json({ error: "Method not allowed" });
 }
+
+export default withRateLimit(handler, 'payment');

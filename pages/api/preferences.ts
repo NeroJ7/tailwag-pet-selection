@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./auth/[...nextauth]";
 import { query } from "../../lib/db";
+import { withRateLimit } from "../../lib/rate-limit";
 
 // 获取当前登录用户
 async function getSessionUser(req: NextApiRequest, res: NextApiResponse) {
@@ -18,7 +19,7 @@ async function getSessionUser(req: NextApiRequest, res: NextApiResponse) {
   return result.rows[0]?.id || null;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const userId = await getSessionUser(req, res);
   
   if (!userId) {
@@ -56,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(200).json(result.rows);
     } catch (err: any) {
       console.error("获取宠物偏好失败:", err);
-      return res.status(500).json({ error: "获取宠物偏好失败", details: err.message });
+      return res.status(500).json({ error: "获取宠物偏好失败" });
     }
   }
 
@@ -103,9 +104,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(201).json(result.rows[0]);
     } catch (err: any) {
       console.error("创建宠物偏好失败:", err);
-      return res.status(500).json({ error: "创建宠物偏好失败", details: err.message });
+      return res.status(500).json({ error: "创建宠物偏好失败" });
     }
   }
-
+  
   return res.status(405).json({ error: "Method not allowed" });
 }
+
+export default withRateLimit(handler, 'cart');

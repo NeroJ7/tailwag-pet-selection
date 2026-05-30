@@ -45,7 +45,7 @@ async function getSessionUser(req: NextApiRequest, res: NextApiResponse) {
   return result.rows[0]?.id || null;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const userId = await getSessionUser(req, res);
   if (!userId) return res.status(401).json({ error: "未登录" });
 
@@ -128,7 +128,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (err: any) {
     console.error("捕获 PayPal 订单失败:", err);
     return res.status(500).json({
-      error: err.message || "捕获 PayPal 订单失败",
+      error: "捕获 PayPal 订单失败，请稍后重试",
     });
   }
 }

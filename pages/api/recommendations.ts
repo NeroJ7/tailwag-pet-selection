@@ -2,6 +2,7 @@ import { query } from '../../lib/db';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './auth/[...nextauth]';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { withRateLimit } from '../../lib/rate-limit';
 
 // 推荐算法：根据用户宠物信息推荐产品
 function calculateRecommendationScore(product: any, pet: any, healthRecords: any[]): number {
@@ -99,7 +100,7 @@ function calculateRecommendationScore(product: any, pet: any, healthRecords: any
   return Math.min(score, 100); // 最高 100 分
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -139,12 +140,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const productsResult = await query('SELECT * FROM products WHERE is_active = true', []);
     const products = productsResult.rows;
 
-    // 为每个宠物获取健康记录
+    // 获取所有宠物的健康记录（优化N+1查询）
+    const petIds = pets.map(pet => pet.id);
+    const healthResult = await query(
+      `SELECT * FROM health_records WHERE pet_id IN (${petIds.map((_, i) => `$${i + 1}`).join(', ')})`,
+      petIds
+    );
+    
+    // 按 pet_id 分组健康记录
+    const healthRecordsMap = new Map();
+    for (const record of healthResult.rows) {
+      if (!healthRecordsMap.has(record.pet_id)) {
+        healthRecordsMap.set(record.pet_id, []);
+      }
+      healthRecordsMap.get(record.pet_id).push(record);
+    }
+    
+    // 为每个宠物生成推荐
     const recommendations: any[] = [];
 
     for (const pet of pets) {
-      const healthResult = await query('SELECT * FROM health_records WHERE pet_id = $1', [pet.id]);
-      const healthRecords = healthResult.rows;
+      const healthRecords = healthRecordsMap.get(pet.id) || [];
 
       // 计算每只宠物对每个产品的推荐分数
       for (const product of products) {
@@ -183,6 +199,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+export default withRateLimit(handler, 'list');
 
 // 生成推荐理由
 function generateRecommendationReason(product: any, pet: any, healthRecords: any[]): string {

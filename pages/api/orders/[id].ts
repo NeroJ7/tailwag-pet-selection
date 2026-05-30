@@ -18,7 +18,7 @@ async function getSessionUser(req: NextApiRequest, res: NextApiResponse) {
   return result.rows[0]?.id || null;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const userId = await getSessionUser(req, res);
 
   if (!userId) {
