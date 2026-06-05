@@ -6,7 +6,13 @@ build
 *.pem
 .env
 .env.*
-!.env*.local
+!.env.example
 .vercel
+coverage
+playwright-report
+test-results
+*.log
+*.md
+!README.md
 
 /src/generated/prisma

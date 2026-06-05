@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Navbar from "../../components/Navbar";
+import { getCsrfToken, getCsrfHeaders, fetchCsrfToken } from "../../lib/csrf-client";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -11,6 +12,13 @@ export default function SignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // 组件加载时预获取 CSRF token（不阻塞）
+  useEffect(() => {
+    if (typeof fetch !== "undefined") {
+      fetch("/api/csrf", { method: "GET", credentials: "include" }).catch(() => {});
+    }
+  }, []);
 
   async function handleSubmit(e: any) {
     e.preventDefault();
@@ -24,16 +32,26 @@ export default function SignUpPage() {
     }
 
     if (password.length < 8) {
-      setError("密码长度至少 8 位，且必须包含大小写字母、数字和特殊字符");
+      setError("密码长度至少8位");
       setLoading(false);
       return;
     }
 
     try {
+      // 确保 CSRF token 已获取（如果 cookie 中没有，主动获取）
+      let csrfToken = getCsrfToken();
+      if (!csrfToken) {
+        csrfToken = await fetchCsrfToken();
+      }
+
       // 调用注册 API
       const res = await fetch("/api/auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrfToken ? { "x-csrf-token": csrfToken } : {}),
+        },
+        credentials: "include",
         body: JSON.stringify({ email, name, password }),
       });
 
@@ -71,8 +89,8 @@ export default function SignUpPage() {
           <div className="lg:col-span-5 hidden lg:block relative">
             <div className="aspect-[4/5] rounded-[4rem] overflow-hidden shadow-premium relative group">
               <img 
-                src="https://images.unsplash.com/photo-1548199975-cc70d3d350b1?auto=format&fit=crop&w=1200&q=90" 
-                alt="TailWag Brand" 
+                src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1200&q=90" 
+                alt="可爱的金毛犬" 
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-brand-charcoal/50"></div>

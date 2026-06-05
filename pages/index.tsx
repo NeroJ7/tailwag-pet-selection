@@ -126,8 +126,8 @@ export default function HomePage() {
               <div className="relative">
                 <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-premium">
                   <img
-                    src="https://images.unsplash.com/photo-1548191265-cc70d3d45ba1?auto=format&fit=crop&w=1200&q=90"
-                    alt="TailWag"
+                    src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1200&q=90"
+                    alt="可爱的金毛犬"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -215,8 +215,8 @@ export default function HomePage() {
         <section className="py-24 px-6 md:px-12 bg-brand-charcoal relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <img
-              src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=1920&q=80"
-              alt=""
+              src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&w=1920&q=80"
+              alt="温馨宠物背景"
               className="w-full h-full object-cover"
             />
           </div>

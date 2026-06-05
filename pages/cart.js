@@ -1,20 +1,97 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from '../components/Navbar';
-import { getCart, removeFromCart, placeOrder, updateCartQuantity, clearCart } from '../utils/cart-util';
+import { getCart, removeFromCart, updateCartQuantity, clearCart, placeOrder } from '../utils/cart-util';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
+import { fetchWithCsrf } from '../lib/csrf-client';
 
 const CartPage = () => {
   const [cart, setCart] = useState([]);
+  const [serverCart, setServerCart] = useState(null); // 服务端购物车
   const [checkoutStep, setCheckoutStep] = useState(1); // 1: Cart, 2: Checkout, 3: Success
   const [customer, setCustomer] = useState({ name: '', email: '', address: '' });
   const router = useRouter();
+  const { data: session, status: sessionStatus } = useSession();
 
   useEffect(() => {
-    setCart(getCart());
+    // 已登录：从服务端加载购物车，并与 localStorage 合并
+    if (sessionStatus === 'authenticated' && session?.user) {
+      fetch('/api/cart')
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data?.cartItems) {
+            const serverItems = data.cartItems.map(item => ({
+              id: item.productId,
+              name: item.product.name,
+              brand: item.product.brand,
+              price: Number(item.product.price),
+              images: item.product.images || [],
+              quantity: item.quantity,
+            }));
+            setCart(serverItems);
+            setServerCart(data);
+            // 同步到 localStorage（兼容未登录状态）
+            localStorage.setItem('tailwag_cart', JSON.stringify(serverItems));
+          } else {
+            setCart(getCart());
+          }
+        })
+        .catch(() => setCart(getCart()));
+    } else {
+      setCart(getCart());
+    }
     const handleCartUpdate = () => setCart(getCart());
     window.addEventListener('cart-updated', handleCartUpdate);
     return () => window.removeEventListener('cart-updated', handleCartUpdate);
-  }, []);
+  }, [sessionStatus]);
+
+  // 登录时：将 localStorage 购物车同步到服务端
+  useEffect(() => {
+    if (sessionStatus === 'authenticated' && session?.user) {
+      const localCart = getCart();
+      if (localCart.length === 0) return;
+      localCart.forEach(item => {
+        fetchWithCsrf('/api/cart', {
+          method: 'POST',
+          body: JSON.stringify({ product_id: item.id, quantity: item.quantity }),
+        }).catch(err => console.error('登录同步失败:', item.id, err));
+      });
+    }
+  }, [sessionStatus]);
+
+  // 服务端同步：删除购物车商品
+  const handleRemoveFromCart = async (itemId) => {
+    removeFromCart(itemId);
+    if (sessionStatus === 'authenticated' && session?.user) {
+      try {
+        await fetchWithCsrf(`/api/cart/${itemId}`, { method: 'DELETE' });
+      } catch (err) {
+        console.error('服务端删除失败:', err);
+      }
+    }
+  };
+
+  // 服务端同步：更新购物车商品数量
+  const handleUpdateQuantity = async (itemId, delta) => {
+    updateCartQuantity(itemId, delta);
+    if (sessionStatus === 'authenticated' && session?.user) {
+      try {
+        // 获取最新数量
+        const cart = getCart();
+        const item = cart.find(i => i.id === itemId);
+        if (item && item.quantity > 0) {
+          await fetchWithCsrf(`/api/cart/${itemId}`, {
+            method: 'PUT',
+            body: JSON.stringify({ quantity: item.quantity }),
+          });
+        } else if (item && item.quantity <= 0) {
+          await fetchWithCsrf(`/api/cart/${itemId}`, { method: 'DELETE' });
+        }
+      } catch (err) {
+        console.error('服务端更新失败:', err);
+      }
+    }
+  };
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -68,10 +145,11 @@ const CartPage = () => {
 
         {cart.length === 0 ? (
           <div className="bg-white rounded-[3rem] p-20 text-center shadow-premium border border-stone-50">
-            <p className="text-2xl text-brand-stone font-medium mb-12 italic">“您的清单空空如也，生活需要一点摇尾巴的惊喜。”</p>
+            <p className="text-2xl text-brand-stone font-medium mb-12 italic">"您的清单空空如也，生活需要一点摇尾巴的惊喜。"</p>
             <button 
               onClick={() => router.push('/')}
               className="bg-brand-charcoal text-white px-12 py-6 rounded-full font-black text-xs uppercase tracking-[0.4em] hover:bg-brand-orange transition-all shadow-xl"
+              data-testid="explore-button"
             >
               去探索甄选作品
             </button>
@@ -95,15 +173,17 @@ const CartPage = () => {
                       {/* 数量增减按钮组 */}
                       <div className="flex items-center space-x-2">
                         <button 
-                          onClick={() => updateCartQuantity(item.id, -1)}
+                          onClick={() => handleUpdateQuantity(item.id, -1)}
                           className="w-8 h-8 rounded-full bg-brand-warm text-brand-charcoal font-black text-sm hover:bg-brand-orange hover:text-white transition-all flex items-center justify-center"
+                          data-testid={`minus-button-${item.id}`}
                         >
                           −
                         </button>
                         <span className="w-10 text-center font-black text-brand-charcoal">{item.quantity}</span>
                         <button 
-                          onClick={() => updateCartQuantity(item.id, 1)}
+                          onClick={() => handleUpdateQuantity(item.id, 1)}
                           className="w-8 h-8 rounded-full bg-brand-warm text-brand-charcoal font-black text-sm hover:bg-brand-orange hover:text-white transition-all flex items-center justify-center"
+                          data-testid={`plus-button-${item.id}`}
                         >
                           +
                         </button>
@@ -111,11 +191,11 @@ const CartPage = () => {
                     </div>
                   </div>
                   <button 
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => handleRemoveFromCart(item.id)}
                     className="p-4 text-brand-stone hover:text-red-500 transition-colors ml-4"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 01 16.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
                   </button>
                 </div>
@@ -201,13 +281,13 @@ const CartPage = () => {
                       <button 
                         type="button"
                         onClick={() => setCheckoutStep(1)}
-                        className="flex-1 border-2 border-white/20 text-white py-6 rounded-full font-black text-[10px] uppercase tracking-widest hover:border-white transition-all"
+                        className="flex-1 border-2 border-white/20 text-white py-6 rounded-full font-black text-[10px] uppercase tracking-[0.4em] hover:border-white transition-all"
                       >
                         返回
                       </button>
                       <button 
                         type="submit"
-                        className="flex-[2] bg-brand-orange text-white py-6 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-brand-charcoal transition-all"
+                        className="flex-[2] bg-brand-orange text-white py-6 rounded-full font-black text-[10px] uppercase tracking-[0.4em] hover:bg-white hover:text-brand-charcoal transition-all"
                       >
                         确认下单 &rarr;
                       </button>

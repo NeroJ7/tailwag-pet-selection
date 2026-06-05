@@ -8,24 +8,103 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model User {
-  id                      String                    @id @default(uuid())
-  email                   String                    @unique
-  name                    String?
-  passwordHash            String                    @map("password_hash")
-  avatarUrl               String?                   @map("avatar_url")
-  createdAt               DateTime                  @default(now()) @map("created_at")
-  updatedAt               DateTime                  @updatedAt @map("updated_at")
-  pets                    Pet[]
-  product_recommendations product_recommendations[]
-  orders                  Order[] // 添加这一行
+model cart_items {
+  id         String   @id
+  cart_id    String
+  product_id String
+  quantity   Int      @default(1)
+  created_at DateTime @default(now())
+  updated_at DateTime
+  carts      carts    @relation(fields: [cart_id], references: [id], onDelete: Cascade)
+  products   products @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
-  @@map("users")
+  @@unique([cart_id, product_id])
 }
 
-model Pet {
-  id                      String                    @id @default(uuid())
-  userId                  String                    @map("user_id")
+model carts {
+  id         String       @id
+  user_id    String       @unique
+  created_at DateTime     @default(now())
+  updated_at DateTime
+  cart_items cart_items[]
+  users      users        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model health_records {
+  id            String    @id
+  pet_id        String
+  record_type   String
+  title         String
+  description   String?
+  record_date   DateTime
+  next_due_date DateTime?
+  veterinarian  String?
+  clinic_name   String?
+  document_urls String[]  @default([])
+  created_at    DateTime  @default(now())
+  pets          pets      @relation(fields: [pet_id], references: [id], onDelete: Cascade)
+}
+
+model order_items {
+  id              String   @id
+  order_id        String
+  product_id      String
+  quantity        Int
+  price           Decimal  @db.Decimal(10, 2)
+  created_at      DateTime @default(now())
+  discount_amount Decimal? @default(0) @db.Decimal(10, 2)
+  productImage    String?
+  productName     String?
+  subtotal        Decimal? @default(0) @db.Decimal(10, 2)
+  orders          orders   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  products        products @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  @@index([order_id], map: "idx_order_items_order")
+  @@index([product_id], map: "idx_order_items_product")
+}
+
+model orders {
+  id               String        @id
+  user_id          String
+  order_number     String        @unique
+  status           String        @default("pending")
+  total_amount     Decimal       @db.Decimal(10, 2)
+  shipping_address Json?
+  payment_id       String?       @unique
+  payment_method   String?
+  paid_at          DateTime?
+  created_at       DateTime      @default(now())
+  updated_at       DateTime
+  cancel_reason    String?
+  cancelled_at     DateTime?
+  coupon_code      String?
+  delivered_at     DateTime?
+  discount_amount  Decimal?      @default(0) @db.Decimal(10, 2)
+  notes            String?
+  shipped_at       DateTime?
+  shipping_fee     Decimal?      @default(0) @db.Decimal(10, 2)
+  order_items      order_items[]
+  users            users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([created_at], map: "idx_orders_created")
+  @@index([status], map: "idx_orders_status")
+  @@index([user_id], map: "idx_orders_user")
+}
+
+model pet_preferences {
+  id               String   @id
+  pet_id           String
+  category         String
+  item_id          String?
+  preference_score Int?
+  notes            String?
+  created_at       DateTime @default(now())
+  pets             pets     @relation(fields: [pet_id], references: [id], onDelete: Cascade)
+}
+
+model pets {
+  id                      String                    @id
+  user_id                 String
   name                    String
   species                 String
   breed                   String?
@@ -33,97 +112,22 @@ model Pet {
   birthday                DateTime?
   weight                  Float?
   photoUrls               String[]                  @default([])
-  microchipId             String?                   @map("microchip_id")
-  isNeutered              Boolean                   @default(false) @map("is_neutered")
-  createdAt               DateTime                  @default(now()) @map("created_at")
-  updatedAt               DateTime                  @updatedAt @map("updated_at")
-  healthRecords           HealthRecord[]
-  preferences             PetPreference[]
-  user                    User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  microchip_id            String?
+  is_neutered             Boolean                   @default(false)
+  created_at              DateTime                  @default(now())
+  updated_at              DateTime
+  health_records          health_records[]
+  pet_preferences         pet_preferences[]
+  users                   users                     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   product_recommendations product_recommendations[]
-
-  @@map("pets")
 }
 
-model HealthRecord {
-  id           String    @id @default(uuid())
-  petId        String    @map("pet_id")
-  recordType   String    @map("record_type")
-  title        String
-  description  String?
-  recordDate   DateTime  @map("record_date")
-  nextDueDate  DateTime? @map("next_due_date")
-  veterinarian String?
-  clinicName   String?   @map("clinic_name")
-  documentUrls String[]  @default([]) @map("document_urls")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  pet          Pet       @relation(fields: [petId], references: [id], onDelete: Cascade)
-
-  @@map("health_records")
-}
-
-model PetPreference {
-  id              String   @id @default(uuid())
-  petId           String   @map("pet_id")
-  category        String
-  itemId          String?  @map("item_id")
-  preferenceScore Int?     @map("preference_score")
-  notes           String?
-  createdAt       DateTime @default(now()) @map("created_at")
-  pet             Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
-
-  @@map("pet_preferences")
-}
-
-model UserActivity {
-  id           String   @id @default(uuid())
-  userId       String?  @map("user_id")
-  petId        String?  @map("pet_id")
-  activityType String   @map("activity_type")
-  itemId       String?  @map("item_id")
-  metadata     Json?
-  createdAt    DateTime @default(now()) @map("created_at")
-
-  @@map("user_activities")
-}
-
-model ProductCategory {
-  id          Int       @id @default(autoincrement())
-  name        String    @unique @db.VarChar(100)
+model product_categories {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique @db.VarChar(100)
   description String?
-  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
-  products    Product[]
-
-  @@map("product_categories")
-}
-
-model Product {
-  id                      String                    @id @default(uuid()) @db.VarChar(255)
-  product_code            String?                   @unique @db.VarChar(255)
-  name                    String                    @db.VarChar(255)
-  brand                   String?                   @db.VarChar(100)
-  categoryId              Int?                      @map("category_id")
-  category_name           String?                   @db.VarChar(100)
-  price                   Decimal                   @db.Decimal(10, 2)
-  images                  String[]
-  sourcing_url            String?
-  selection_reason        String?
-  tag                     String?                   @db.VarChar(100)
-  margin                  String?                   @db.VarChar(50)
-  voc_highlights          String[]
-  description             String?
-  specs                   Json?
-  reviews                 Json?
-  is_active               Boolean?                  @default(true)
-  createdAt               DateTime?                 @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt               DateTime?                 @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
-  product_recommendations product_recommendations[]
-  category                ProductCategory?          @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  orderItems              OrderItem[] // 添加这一行
-
-  @@index([category_name], map: "idx_products_category")
-  @@index([price], map: "idx_products_price")
-  @@map("products")
+  created_at  DateTime?  @default(now()) @db.Timestamp(6)
+  products    products[]
 }
 
 model product_recommendations {
@@ -136,41 +140,64 @@ model product_recommendations {
   is_clicked            Boolean?  @default(false)
   is_purchased          Boolean?  @default(false)
   created_at            DateTime? @default(now()) @db.Timestamp(6)
-  pets                  Pet?      @relation(fields: [pet_id], references: [id], onUpdate: NoAction)
-  products              Product?  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  users                 User?     @relation(fields: [user_id], references: [id], onUpdate: NoAction)
+  pets                  pets?     @relation(fields: [pet_id], references: [id], onUpdate: NoAction)
+  products              products? @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users                 users?    @relation(fields: [user_id], references: [id], onUpdate: NoAction)
 
   @@index([pet_id], map: "idx_product_recommendations_pet")
   @@index([user_id], map: "idx_product_recommendations_user")
 }
 
-model Order {
-  id              String      @id @default(uuid())
-  userId          String      @map("user_id")
-  orderNumber     String      @unique @map("order_number")
-  status          String      @default("pending") // pending, paid, shipped, delivered, cancelled
-  totalAmount     Decimal     @map("total_amount") @db.Decimal(10, 2)
-  shippingAddress Json?       @map("shipping_address")
-  paymentId       String?     @unique @map("payment_id")
-  paymentMethod   String?     @map("payment_method") // alipay, wechat_pay
-  paidAt          DateTime?   @map("paid_at")
-  createdAt       DateTime    @default(now()) @map("created_at")
-  updatedAt       DateTime    @updatedAt @map("updated_at")
-  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items           OrderItem[]
+model products {
+  id                      String                    @id @db.VarChar(255)
+  product_code            String?                   @unique @db.VarChar(255)
+  name                    String                    @db.VarChar(255)
+  brand                   String?                   @db.VarChar(100)
+  category_id             Int?
+  category_name           String?                   @db.VarChar(100)
+  price                   Decimal                   @db.Decimal(10, 2)
+  images                  String[]
+  sourcing_url            String?
+  selection_reason        String?
+  tag                     String?                   @db.VarChar(100)
+  margin                  String?                   @db.VarChar(50)
+  voc_highlights          String[]
+  description             String?
+  specs                   Json?
+  reviews                 Json?
+  is_active               Boolean?                  @default(true)
+  created_at              DateTime?                 @default(now()) @db.Timestamp(6)
+  updated_at              DateTime?                 @default(now()) @db.Timestamp(6)
+  cart_items              cart_items[]
+  order_items             order_items[]
+  product_recommendations product_recommendations[]
+  product_categories      product_categories?       @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@map("orders")
+  @@index([category_name], map: "idx_products_category")
+  @@index([price], map: "idx_products_price")
 }
 
-model OrderItem {
-  id        String   @id @default(uuid())
-  orderId   String   @map("order_id")
-  productId String   @map("product_id")
-  quantity  Int
-  price     Decimal  @db.Decimal(10, 2)
-  createdAt DateTime @default(now()) @map("created_at")
-  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+model user_activities {
+  id            String   @id
+  user_id       String?
+  pet_id        String?
+  activity_type String
+  item_id       String?
+  metadata      Json?
+  created_at    DateTime @default(now())
+}
 
-  @@map("order_items")
+model users {
+  id                      String                    @id
+  email                   String                    @unique
+  name                    String?
+  password_hash           String
+  avatar_url              String?
+  role                    String                    @default("user") @db.VarChar(20)
+  created_at              DateTime                  @default(now())
+  updated_at              DateTime
+  carts                   carts?
+  orders                  orders[]
+  pets                    pets[]
+  product_recommendations product_recommendations[]
 }

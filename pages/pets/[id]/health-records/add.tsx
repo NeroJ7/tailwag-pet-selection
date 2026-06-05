@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Navbar from "../../../../components/Navbar";
 import Head from "next/head";
+import { fetchWithCsrf, fetchCsrfToken } from "../../../../lib/csrf-client";
 
 export default function AddHealthRecordPage() {
   const { data: session, status } = useSession();
@@ -27,6 +28,8 @@ export default function AddHealthRecordPage() {
     if (status === "unauthenticated") {
       router.push("/auth/signin");
     }
+    // 获取 CSRF token
+    fetchCsrfToken();
   }, [status, router]);
 
   useEffect(() => {
@@ -67,7 +70,7 @@ export default function AddHealthRecordPage() {
         documentUrls: formData.documentUrls ? [formData.documentUrls] : [],
       };
 
-      const res = await fetch("/api/health-records", {
+      const res = await fetchWithCsrf("/api/health-records", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

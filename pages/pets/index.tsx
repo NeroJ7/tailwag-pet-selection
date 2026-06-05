@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Navbar from "../../components/Navbar";
 import Head from "next/head";
+import { fetchWithCsrf } from "../../lib/csrf-client";
 
 export default function PetsPage() {
   const { data: session, status } = useSession();
@@ -38,8 +39,9 @@ export default function PetsPage() {
     if (!confirm("确定要删除这个宠物吗？")) return;
 
     try {
-      const res = await fetch(`/api/pets?id=${id}`, {
+      const res = await fetchWithCsrf("/api/pets", {
         method: "DELETE",
+        body: JSON.stringify({ id }),
       });
 
       if (res.ok) {

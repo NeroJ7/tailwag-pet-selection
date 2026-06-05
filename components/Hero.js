@@ -40,8 +40,8 @@ const Hero = () => {
             
             <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-premium group relative">
               <img 
-                src="https://images.unsplash.com/photo-1548191265-cc70d3d45ba1?auto=format&fit=crop&w=1200&q=90" 
-                alt="Premium pet products curation" 
+                src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1200&q=90" 
+                alt="可爱宠物" 
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/40 to-transparent"></div>

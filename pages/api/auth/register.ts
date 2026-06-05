@@ -2,8 +2,9 @@ import { query } from '../../../lib/db';
 import bcrypt from 'bcryptjs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
+import { withRateLimit } from '../../../lib/rate-limit';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -26,16 +27,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: '邮箱格式不正确' });
     }
 
-    // 强密码策略：必须包含大小写字母、数字和特殊字符，至少8位
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(password)) {
+    // 密码强度验证：至少8位
+    if (password.length < 8) {
       return res.status(400).json({ 
-        error: '密码必须包含大小写字母、数字和特殊字符，至少8位' 
+        error: '密码长度至少8位' 
       });
     }
 
     // 检查用户是否已存在
-    const existing = await query('SELECT id FROM "users" WHERE email = $1', [email]);
+    const existing = await query('SELECT id FROM "users" WHERE email = $1', [sanitizedEmail]);
     if (existing.rows.length > 0) {
       return res.status(400).json({ error: '该邮箱已被注册' });
     }
@@ -60,3 +60,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: '注册失败，请稍后重试' });
   }
 }
+
+export default withRateLimit(handler);

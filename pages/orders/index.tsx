@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
+import { fetchWithCsrf, fetchCsrfToken } from '../../lib/csrf-client';
 import Link from 'next/link';
 
 interface OrderItem {
@@ -45,6 +46,8 @@ export default function OrdersPage() {
       router.push('/auth/signin');
       return;
     }
+    // 获取 CSRF token
+    fetchCsrfToken();
     fetchOrders();
   }, [session, status]);
 
@@ -68,7 +71,7 @@ export default function OrdersPage() {
     if (!confirm('确定要取消这个订单吗？')) return;
 
     try {
-      const res = await fetch(`/api/orders/${orderId}`, {
+      const res = await fetchWithCsrf(`/api/orders/${orderId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'cancelled' }),
@@ -86,7 +89,7 @@ export default function OrdersPage() {
     const paymentMethod = window.confirm('点击确定使用支付宝支付，取消使用微信支付') ? 'alipay' : 'wechat_pay';
 
     try {
-      const res = await fetch('/api/orders/pay', {
+      const res = await fetchWithCsrf('/api/orders/pay', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderId, paymentMethod }),

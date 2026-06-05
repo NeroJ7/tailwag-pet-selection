@@ -40,8 +40,8 @@ export default function SignInPage() {
           <div className="lg:col-span-5 hidden lg:block relative">
             <div className="aspect-[4/5] rounded-[4rem] overflow-hidden shadow-premium relative group">
               <img 
-                src="https://images.unsplash.com/photo-1548199975-cc70d3d350b1?auto=format&fit=crop&w=1200&q=90" 
-                alt="TailWag Brand" 
+                src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1200&q=90" 
+                alt="可爱的金毛犬" 
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-brand-charcoal/50"></div>

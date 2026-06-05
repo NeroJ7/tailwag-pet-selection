@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Navbar from "../../../components/Navbar";
 import Head from "next/head";
+import { fetchWithCsrf, fetchCsrfToken } from "../../../lib/csrf-client";
 
 export default function EditPetPage() {
   const { data: session, status } = useSession();
@@ -29,6 +30,8 @@ export default function EditPetPage() {
     if (status === "unauthenticated") {
       router.push("/auth/signin");
     }
+    // 获取 CSRF token
+    fetchCsrfToken();
   }, [status, router]);
 
   useEffect(() => {
@@ -100,7 +103,7 @@ export default function EditPetPage() {
       if (formData.microchipId) payload.microchipId = formData.microchipId;
       payload.isNeutered = formData.isNeutered;
 
-      const res = await fetch("/api/pets", {
+      const res = await fetchWithCsrf("/api/pets", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

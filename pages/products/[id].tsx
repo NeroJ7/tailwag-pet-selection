@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { addToCart } from '../../utils/cart-util';
+import { fetchWithCsrf } from '../../lib/csrf-client';
 
 interface Product {
   id: string;
@@ -21,10 +24,12 @@ interface Product {
 
 export default function ProductDetailPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { id } = router.query;
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [addToCartSuccess, setAddToCartSuccess] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -43,6 +48,37 @@ export default function ProductDetailPage() {
       console.error('Error fetching product:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+    // 始终写入 localStorage（立即反馈）
+    addToCart({
+      id: product.id,
+      name: product.name,
+      brand: product.brand,
+      price: Number(product.price),
+      images: product.images,
+      quantity: 1,
+    });
+    setAddToCartSuccess(true);
+    setTimeout(() => setAddToCartSuccess(false), 3000);
+
+    // 如果用户已登录，同时写入服务端购物车
+    if (status === 'authenticated' && session?.user) {
+      try {
+        await fetchWithCsrf('/api/cart', {
+          method: 'POST',
+          body: JSON.stringify({
+            product_id: product.id,
+            quantity: 1,
+          }),
+        });
+      } catch (err) {
+        console.error('服务端购物车同步失败:', err);
+        // 不阻塞用户操作，localStorage 已写入
+      }
     }
   };
 
@@ -150,10 +186,18 @@ export default function ProductDetailPage() {
                 >
                   查看货源（1688）
                 </a>
-                <button className="flex-1 border-2 border-orange-600 text-orange-600 py-3 rounded-lg hover:bg-orange-50 transition font-semibold">
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 border-2 border-orange-600 text-orange-600 py-3 rounded-lg hover:bg-orange-50 transition font-semibold"
+                >
                   加入购物车
                 </button>
               </div>
+
+              {/* 成功提示 */}
+              {addToCartSuccess && (
+                <div className="mt-2 text-sm text-green-600">已成功加入购物车！</div>
+              )}
 
               {/* 利润率 */}
               {product.margin && (

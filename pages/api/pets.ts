@@ -24,6 +24,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   // 获取当前用户
   const userId = await getSessionUser(req, res);
   
+  // 所有请求都必须先登录
   if (!userId) {
     return res.status(401).json({ error: "未登录" });
   }
@@ -224,3 +225,5 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   return res.status(405).json({ error: "Method not allowed" });
 }
+
+export default withRateLimit(handler, 'default');

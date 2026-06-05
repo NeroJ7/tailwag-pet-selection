@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
+import { fetchWithCsrf, fetchCsrfToken } from '../../lib/csrf-client';
 
 interface Product {
   id: string;
@@ -40,6 +41,8 @@ export default function AdminProductsPage() {
       router.push('/auth/signin');
       return;
     }
+    // 获取 CSRF token
+    fetchCsrfToken();
     fetchProducts();
   }, [session, status]);
 
@@ -72,7 +75,7 @@ export default function AdminProductsPage() {
         ? { ...formData, id: editingProduct.id, price: parseFloat(formData.price) }
         : { ...formData, price: parseFloat(formData.price) };
 
-      const res = await fetch(url, {
+      const res = await fetchWithCsrf(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -106,7 +109,7 @@ export default function AdminProductsPage() {
     if (!confirm('确定要删除这个商品吗？')) return;
 
     try {
-      const res = await fetch(`/api/admin/products?id=${id}`, {
+      const res = await fetchWithCsrf(`/api/admin/products?id=${id}`, {
         method: 'DELETE',
       });
 
@@ -198,10 +201,11 @@ export default function AdminProductsPage() {
               </h2>
               <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
+                  <label htmlFor="name" className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
                     商品名称 *
                   </label>
                   <input
+                    id="name"
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -211,10 +215,11 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
+                  <label htmlFor="brand" className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
                     品牌
                   </label>
                   <input
+                    id="brand"
                     type="text"
                     value={formData.brand}
                     onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
@@ -223,10 +228,11 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
+                  <label htmlFor="categoryName" className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
                     分类
                   </label>
                   <input
+                    id="categoryName"
                     type="text"
                     value={formData.categoryName}
                     onChange={(e) => setFormData({ ...formData, categoryName: e.target.value })}
@@ -235,10 +241,11 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
+                  <label htmlFor="price" className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
                     价格 *
                   </label>
                   <input
+                    id="price"
                     type="number"
                     step="0.01"
                     value={formData.price}
@@ -249,10 +256,11 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
+                  <label htmlFor="description" className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
                     描述
                   </label>
                   <textarea
+                    id="description"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
@@ -261,10 +269,11 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
+                  <label htmlFor="tag" className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
                     标签
                   </label>
                   <input
+                    id="tag"
                     type="text"
                     value={formData.tag}
                     onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
@@ -273,10 +282,11 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
+                  <label htmlFor="sourcingUrl" className="block text-[10px] font-black uppercase tracking-widest text-brand-stone mb-3">
                     货源链接
                   </label>
                   <input
+                    id="sourcingUrl"
                     type="url"
                     value={formData.sourcingUrl}
                     onChange={(e) => setFormData({ ...formData, sourcingUrl: e.target.value })}

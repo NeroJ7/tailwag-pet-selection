@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 import Navbar from '../components/Navbar';
 
 const LoginPage = () => {
+  // 预获取 CSRF token
+  useEffect(() => {
+    if (typeof fetch !== 'undefined') {
+      fetch('/api/csrf', { method: 'GET', credentials: 'include' }).catch(() => {});
+    }
+  }, []);
   const router = useRouter();
   const [tab, setTab] = useState('login'); // 'login' | 'register'
   
@@ -83,9 +89,27 @@ const LoginPage = () => {
     setRegErrors({});
 
     try {
+      // 获取 CSRF token（如果没有则主动获取）
+      let csrfToken = '';
+      const csrfMatch = document.cookie.match(/(^|;)\s*csrf_token=([^;]+)/);
+      if (csrfMatch) {
+        csrfToken = decodeURIComponent(csrfMatch[2]);
+      } else {
+        // 主动获取 CSRF token
+        const csrfRes = await fetch('/api/csrf', { method: 'GET', credentials: 'include' });
+        if (csrfRes.ok) {
+          const csrfData = await csrfRes.json();
+          if (csrfData.token) csrfToken = csrfData.token;
+        }
+      }
+
       const res = await fetch("/api/auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrfToken ? { "x-csrf-token": csrfToken } : {})
+        },
+        credentials: 'include',
         body: JSON.stringify({ name: regName, email: regEmail, password: regPassword })
       });
 
@@ -125,7 +149,7 @@ const LoginPage = () => {
           <div className="lg:col-span-5 hidden lg:block relative">
             <div className="aspect-[4/5] rounded-[4rem] overflow-hidden shadow-premium relative group">
               <img 
-                src="https://images.unsplash.com/photo-1548191265-cc70d3d45ba1?auto=format&fit=crop&w=1200&q=90" 
+                src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1200&q=90" 
                 alt="TailWag Brand" 
                 className="w-full h-full object-cover"
               />

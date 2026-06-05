@@ -50,7 +50,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const random = Math.random().toString(36).substring(2, 8);
     const filename = `pet_${timestamp}_${random}.${ext}`;
 
-    // 上传到 Vercel Blob
+    // 上传到 Vercel Blob（需要配置 BLOB_READ_WRITE_TOKEN）
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      return res.status(500).json({ error: "文件上传未配置（缺少 BLOB_READ_WRITE_TOKEN）" });
+    }
     const blob = await put(filename, fileBuffer, {
       access: 'public',
       token: process.env.BLOB_READ_WRITE_TOKEN,

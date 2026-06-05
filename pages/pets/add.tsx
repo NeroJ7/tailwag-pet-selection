@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Navbar from "../../components/Navbar";
 import Head from "next/head";
 import ImageUpload from "../../components/ImageUpload";
+import { fetchWithCsrf, fetchCsrfToken } from "../../lib/csrf-client";
 
 export default function AddPetPage() {
   const { data: session, status } = useSession();
@@ -26,6 +27,8 @@ export default function AddPetPage() {
     if (status === "unauthenticated") {
       router.push("/auth/signin");
     }
+    // 获取 CSRF token
+    fetchCsrfToken();
   }, [status, router]);
 
   if (status === "loading") {
@@ -57,7 +60,7 @@ export default function AddPetPage() {
         birthday: formData.birthday ? new Date(formData.birthday).toISOString() : null,
       };
 
-      const res = await fetch("/api/pets", {
+      const res = await fetchWithCsrf("/api/pets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -262,12 +265,13 @@ export default function AddPetPage() {
             <div className="flex items-center space-x-4 p-6 bg-white rounded-2xl border border-stone-200">
               <input
                 type="checkbox"
+                id="isNeutered"
                 name="isNeutered"
                 checked={formData.isNeutered}
                 onChange={handleChange}
                 className="w-6 h-6 rounded-lg border-2 border-stone-300 text-brand-orange focus:ring-brand-orange cursor-pointer"
               />
-              <label className="text-sm font-bold text-brand-charcoal cursor-pointer">
+              <label htmlFor="isNeutered" className="text-sm font-bold text-brand-charcoal cursor-pointer">
                 已绝育
               </label>
             </div>

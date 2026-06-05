@@ -4,17 +4,24 @@ import { authOptions } from "../auth/[...nextauth]";
 import { query } from "../../../lib/db";
 import { withRateLimit } from "../../../lib/rate-limit";
 
-// 检查是否是管理员
+// 检查是否是管理员（基于 users.role 字段）
 async function isAdmin(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
   if (!session?.user?.email) {
     return false;
   }
 
-  // 简单检查：如果是特定邮箱则为管理员
-  // 实际项目中应该使用role字段
-  const adminEmails = ['admin@tailwag.com']; // 可以扩展
-  return adminEmails.includes(session.user.email);
+  // 从数据库读取用户角色
+  try {
+    const result = await query(
+      'SELECT role FROM users WHERE email = $1 LIMIT 1',
+      [session.user.email]
+    );
+    return result.rows[0]?.role === 'admin';
+  } catch (err) {
+    console.error('检查管理员权限失败:', err);
+    return false;
+  }
 }
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {

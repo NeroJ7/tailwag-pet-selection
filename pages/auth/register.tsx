@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { fetchWithCsrf, fetchCsrfToken } from "../../lib/csrf-client";
 
 export default function Register() {
   const router = useRouter();
@@ -10,6 +11,11 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // 页面加载时获取 CSRF token
+  useEffect(() => {
+    fetchCsrfToken();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,14 +29,14 @@ export default function Register() {
       return;
     }
 
-    if (password.length < 6) {
-      setError("密码长度至少6位");
+    if (password.length < 8) {
+      setError("密码长度至少8位");
       setIsLoading(false);
       return;
     }
 
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetchWithCsrf("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password })
@@ -107,7 +113,7 @@ export default function Register() {
                   type="password"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="密码（至少6位）"
+                  placeholder="密码（至少8位）"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />

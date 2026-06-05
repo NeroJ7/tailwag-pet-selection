@@ -4,6 +4,8 @@ import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
+import DOMPurify from 'isomorphic-dompurify';
+import { fetchWithCsrf, fetchCsrfToken } from '../../lib/csrf-client';
 
 const PayPalButton = dynamic(() => import('../../components/PayPalButton'), { ssr: false });
 
@@ -50,6 +52,8 @@ export default function OrderDetailPage() {
       router.push('/auth/signin');
       return;
     }
+    // 获取 CSRF token
+    fetchCsrfToken();
     if (id) {
       fetchOrder();
     }
@@ -78,7 +82,7 @@ export default function OrderDetailPage() {
     setPaying(true);
 
     try {
-      const res = await fetch('/api/orders/pay', {
+      const res = await fetchWithCsrf('/api/orders/pay', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderId: order.id, paymentMethod }),
@@ -93,8 +97,12 @@ export default function OrderDetailPage() {
 
       // 支付宝返回 form HTML，自动提交
       if (data.formHtml) {
+        const cleanHtml = DOMPurify.sanitize(data.formHtml, {
+          ADD_TAGS: ['form', 'input', 'button'],
+          ADD_ATTR: ['action', 'method', 'type', 'name', 'value', 'charset', 'target'],
+        });
         const div = document.createElement('div');
-        div.innerHTML = data.formHtml;
+        div.innerHTML = cleanHtml;
         const form = div.querySelector('form');
         if (form) {
           document.body.appendChild(form);
@@ -123,7 +131,7 @@ export default function OrderDetailPage() {
     if (!confirm('确定要取消这个订单吗？')) return;
 
     try {
-      const res = await fetch(`/api/orders/${order.id}`, {
+      const res = await fetchWithCsrf(`/api/orders/${order.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'cancelled' }),

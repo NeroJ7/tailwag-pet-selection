@@ -10,10 +10,15 @@ const SourcingDashboard = () => {
     const loadedOrders = JSON.parse(localStorage.getItem('tailwag_orders') || '[]');
     setOrders(loadedOrders);
     
-    const totalRev = loadedOrders.reduce((sum, o) => sum + o.total, 0);
+    const totalRev = loadedOrders.reduce((sum, o) => {
+      // 确保 o.total 是数字，否则使用 0
+      const orderTotal = Number(o.total) || 0;
+      return sum + orderTotal;
+    }, 0);
+    
     setStats({
-      revenue: totalRev,
-      margin: (totalRev * 0.62).toFixed(2), // Mock 62% average margin
+      revenue: Number(totalRev) || 0,
+      margin: Number((totalRev * 0.62).toFixed(2)) || 0, // 确保 margin 是数字
       orders: loadedOrders.length
     });
   }, []);
