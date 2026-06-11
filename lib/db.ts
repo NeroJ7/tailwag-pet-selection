@@ -8,9 +8,7 @@ const pool = new Pool({
   connectionString: process.env.DIRECT_URL || process.env.DATABASE_URL,
   max: 20, // 最大连接数
   idleTimeoutMillis: 30000,
-  ssl: process.env.NODE_ENV === 'production' 
-    ? { rejectUnauthorized: true } // 生产环境强制SSL验证
-    : { require: true, rejectUnauthorized: false } // 开发环境：启用SSL加密但不验证证书（兼容Neon等云数据库）
+  ssl: { rejectUnauthorized: false }, // 兼容 Neon 等云数据库（SSL 加密但不验证证书）
 });
 
 // 查询日志配置
