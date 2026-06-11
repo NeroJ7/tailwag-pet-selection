@@ -41,33 +41,33 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // 分类筛选
     if (category) {
       paramCount++;
-      sql += ` AND p.category_name = $` + paramCount;
+      sql += ` AND p.category_id = $${paramCount}`;
       params.push(category);
     }
 
     // 价格区间筛选
     if (minPrice) {
       paramCount++;
-      sql += ` AND p.price >= $` + paramCount;
+      sql += ` AND p.price >= $${paramCount}`;
       params.push(parseFloat(minPrice as string));
     }
     if (maxPrice) {
       paramCount++;
-      sql += ` AND p.price <= $` + paramCount;
+      sql += ` AND p.price <= $${paramCount}`;
       params.push(parseFloat(maxPrice as string));
     }
 
     // 搜索（产品名称、品牌、描述）
     if (search) {
       paramCount++;
-      sql += ` AND (p.name ILIKE $` + paramCount + ` OR p.brand ILIKE $` + paramCount + ` OR p.description ILIKE $` + paramCount + `)`;
+      sql += ` AND (p.name ILIKE $${paramCount} OR p.brand ILIKE $${paramCount} OR p.description ILIKE $${paramCount})`;
       params.push(`%${search}%`);
     }
 
     // 物种筛选
     if (species) {
       paramCount++;
-      sql += ` AND (p.description ILIKE $` + paramCount + ` OR p.tag ILIKE $` + paramCount + ` OR p.specs::text ILIKE $` + paramCount + `)`;
+      sql += ` AND (p.description ILIKE $${paramCount} OR p.tag ILIKE $${paramCount})`;
       params.push(`%${species}%`);
     }
 
@@ -76,17 +76,32 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // 分页
     paramCount++;
-    sql += ` LIMIT $` + paramCount;
+    sql += ` LIMIT $${paramCount}`;
     params.push(parseInt(limit as string));
 
     paramCount++;
-    sql += ` OFFSET $` + paramCount;
+    sql += ` OFFSET $${paramCount}`;
     params.push(parseInt(offset as string));
 
     const result = await query(sql, params);
 
-    // 获取总数（简化版本，不考虑筛选条件）
-    const countResult = await query('SELECT COUNT(*) FROM products WHERE is_active = true', []);
+    // 获取总数（考虑筛选条件）
+    let countSql = 'SELECT COUNT(*) FROM products p WHERE p.is_active = true';
+    const countParams: any[] = [];
+    let countParamCount = 0;
+
+    if (search) {
+      countParamCount++;
+      countSql += ` AND (p.name ILIKE $${countParamCount} OR p.brand ILIKE $${countParamCount} OR p.description ILIKE $${countParamCount})`;
+      countParams.push(`%${search}%`);
+    }
+    if (category) {
+      countParamCount++;
+      countSql += ` AND p.category_id = $${countParamCount}`;
+      countParams.push(category);
+    }
+
+    const countResult = await query(countSql, countParams);
     const total = parseInt(countResult.rows[0].count);
 
     return res.status(200).json({
@@ -95,9 +110,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       limit: parseInt(limit as string),
       offset: parseInt(offset as string)
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching products:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ 
+      error: 'Internal server error',
+      debug: process.env.NODE_ENV !== 'production' ? error.message : undefined
+    });
   }
 }
 
