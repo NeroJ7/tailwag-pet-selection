@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import { query } from "../../../lib/db";
 import { verifyCsrfToken, getCsrfTokenFromRequest } from "../../../lib/csrf";
-import { createWechatPay } from "../../../lib/wechat-pay";
+import { createWechatPayV3 } from "../../../lib/wechat-pay-v3";
 import { withRateLimit } from "../../../lib/rate-limit";
 
 // 动态导入支付宝 SDK（避免未配置时报错）
@@ -170,10 +170,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(400).json({ error: "支付宝下单失败，请稍后重试" });
       }
 
-      // 微信支付
+      // 微信支付（API v3）
       if (paymentMethod === "wechat_pay") {
-        const wechatPay = createWechatPay();
-
+        const wechatPay = createWechatPayV3();
+        
         // 未配置微信支付，回退到模拟支付
         if (!wechatPay) {
           console.log("微信支付未配置，使用模拟支付");
@@ -189,7 +189,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             WHERE id = $4`,
             ["paid", paymentResult.paymentId, "wechat_pay(sandbox)", orderId]
           );
-
+          
           return res.status(200).json({
             success: true,
             message: "微信支付成功（模拟，未配置真实微信支付）",
@@ -197,38 +197,38 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             payment: paymentResult,
           });
         }
-
-        // 真实微信支付：统一下单（Native 支付，返回二维码）
+        
+        // 真实微信支付：Native 支付（扫码支付）
         try {
-          const notifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/orders/wechat-notify`;
-          const amountInCents = Math.round(parseFloat(order.total_amount) * 100); // 转换为分
-
-          const payResult = await wechatPay.unifiedOrder({
+          const notifyUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://pet-selection-site.vercel.app'}/api/orders/wechat-notify-v3`;
+          const amountInCents = Math.round(parseFloat(order.total_amount) * 100);
+          
+          const payResult = await wechatPay.createOrder({
             orderNumber: order.order_number,
             description: `TailWag 订单 #${order.order_number}`,
             amount: amountInCents,
             notifyUrl: notifyUrl,
             tradeType: 'NATIVE', // 扫码支付
           });
-
-          if (payResult.return_code === 'SUCCESS' && payResult.result_code === 'SUCCESS') {
+          
+          if (payResult.code_url) {
             // 返回二维码链接给前端
             return res.status(200).json({
               success: true,
               paymentMethod: "wechat_pay",
-              codeUrl: payResult.code_url, // 二维码链接
+              codeUrl: payResult.code_url,
               orderNumber: order.order_number,
               message: "请使用微信扫描二维码完成支付",
             });
           } else {
-            console.error("微信支付下单失败:", payResult.err_code_des);
+            console.error("微信支付下单失败:", payResult);
             return res.status(400).json({ 
-              error: `微信支付下单失败: ${payResult.err_code_des || '未知错误'}` 
+              error: `微信支付下单失败: ${payResult.message || '未知错误'}` 
             });
           }
         } catch (err: any) {
           console.error("微信支付下单异常:", err);
-          return res.status(500).json({ error: "微信支付下单异常，请稍后重试" });
+          return res.status(500).json({ error: `微信支付下单异常: ${err.message}` });
         }
       }
 
