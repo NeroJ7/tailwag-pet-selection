@@ -5,7 +5,7 @@ const stores: Map<string, { count: number; resetAt: number }> = new Map();
 
 const LOGIN_LIMIT = {
   windowMs: 15 * 60 * 1000,  // 15 分钟
-  maxRequests: 10,              // 最多 10 次
+  maxRequests: 10,               // 合理限制：10次/15分钟
 };
 
 function getIp(req: NextRequest): string {
@@ -87,7 +87,12 @@ export function middleware(req: NextRequest) {
   }
 
   // 2. CSRF 验证（状态变更请求）
-  if (!validateCsrf(req)) {
+  // 排除 NextAuth 路由（NextAuth 自己处理 CSRF）
+  // 排除注册 API（公开端点，不需要 CSRF）
+  const isNextAuthCallback = pathname.startsWith('/api/auth/callback/');
+  const isNextAuthCsrf = pathname.startsWith('/api/auth/csrf');
+  const isRegister = pathname === '/api/auth/register';
+  if (!isNextAuthCallback && !isNextAuthCsrf && !isRegister && !validateCsrf(req)) {
     return new NextResponse(
       JSON.stringify({ error: 'CSRF Token 无效或缺失', code: 'CSRF_TOKEN_INVALID' }),
       {
@@ -103,10 +108,11 @@ export function middleware(req: NextRequest) {
       .map(b => b.toString(16).padStart(2, '0'))
       .join('');
     const response = NextResponse.next();
+    const isLocalhost = req.nextUrl.hostname === 'localhost' || req.nextUrl.hostname === '127.0.0.1';
     response.cookies.set('csrf_token', token, {
       httpOnly: false,  // 允许 JavaScript 读取
       sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production' && !isLocalhost,
       path: '/',
     });
     return response;
@@ -116,5 +122,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/auth/:path*', '/api/orders/:path*', '/api/pets/:path*'],
+  matcher: ['/api/auth/:path*', '/api/orders/:path*', '/api/pets/:path*', '/api/csrf'],
 };

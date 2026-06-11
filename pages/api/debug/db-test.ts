@@ -74,7 +74,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     };
   }
 
-  // 测试 5: 检查 DOMPurify
+    // 测试 5: 检查 DOMPurify
   try {
     const DOMPurify = require('isomorphic-dompurify');
     const clean = DOMPurify.sanitize('<script>alert(1)</script>hello');
@@ -89,6 +89,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       stack: err.stack?.substring(0, 200),
     };
   }
+
+  // 测试 6: 检查 NEXTAUTH_SECRET
+  results.tests.nextauth_secret = {
+    success: !!process.env.NEXTAUTH_SECRET && process.env.NEXTAUTH_SECRET.length > 0,
+    length: process.env.NEXTAUTH_SECRET ? process.env.NEXTAUTH_SECRET.length : 0,
+  };
 
   return res.status(200).json(results);
 }
