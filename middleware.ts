@@ -5,7 +5,7 @@ const stores: Map<string, { count: number; resetAt: number }> = new Map();
 
 const LOGIN_LIMIT = {
   windowMs: 15 * 60 * 1000,  // 15 分钟
-  maxRequests: 10,               // 合理限制：10次/15分钟
+  maxRequests: 30,              // 合理限制：30次/15分钟
 };
 
 function getIp(req: NextRequest): string {

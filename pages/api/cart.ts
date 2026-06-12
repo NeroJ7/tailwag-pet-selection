@@ -9,9 +9,7 @@ const pool = new Pool({
   connectionString: process.env.DIRECT_URL || process.env.DATABASE_URL,
   max: 20,
   idleTimeoutMillis: 30000,
-  ssl: process.env.NODE_ENV === 'production'
-    ? { rejectUnauthorized: true }
-    : { rejectUnauthorized: false },
+  ssl: { rejectUnauthorized: false },
 });
 
 async function query(sql: string, params: any[] = []) {
@@ -84,6 +82,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       if (!product_id) {
         return res.status(400).json({ error: '缺少产品ID', step: 2 });
       }
+      // 数量校验：必须是正整数且不超过99
+      const safeQty = Math.min(Math.max(Math.floor(Number(quantity)) || 1, 1), 99);
 
       // 检查商品是否存在
       const productResult = await query('SELECT * FROM products WHERE id = $1 AND is_active = true', [product_id]);
@@ -99,7 +99,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       if (existingResult.rows.length > 0) {
         // 更新数量
-        const newQty = existingResult.rows[0].quantity + quantity;
+        const newQty = Math.min(existingResult.rows[0].quantity + safeQty, 99);
         const result = await query(
           'UPDATE cart_items SET quantity = $1, updated_at = NOW() WHERE id = $2 RETURNING *',
           [newQty, existingResult.rows[0].id]
@@ -110,7 +110,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         const crypto = require('crypto');
         const result = await query(
           'INSERT INTO cart_items (id, cart_id, product_id, quantity, created_at, updated_at) VALUES ($1, $2, $3, $4, NOW(), NOW()) RETURNING *',
-          [crypto.randomUUID(), cart.id, product_id, quantity]
+          [crypto.randomUUID(), cart.id, product_id, safeQty]
         );
         return res.status(201).json({ message: '已加入购物车', item: result.rows[0] });
       }

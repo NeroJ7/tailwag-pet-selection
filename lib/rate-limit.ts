@@ -6,32 +6,32 @@ const requestLogs = new Map<string, number[]>();
 
 // 预定义限流配置
 export const RateLimitConfig = {
-  // 认证相关 API（严格限流）
+  // 认证相关 API（合理限流）
   auth: {
     windowMs: 15 * 60 * 1000,  // 15 分钟
-    maxRequests: 10,              // 10次/15分钟
+    maxRequests: 30,             // 30次/15分钟（从10提升到30）
     message: '登录请求过于频繁，请15分钟后再试'
   },
   register: {
     windowMs: 60 * 60 * 1000,  // 1 小时
-    maxRequests: 5,               // 5次/小时
+    maxRequests: 20,             // 20次/小时（从5提升到20）
     message: '注册请求过于频繁，请1小时后再试'
   },
   
-  // 查询类 API（中等限流）
+  // 查询类 API（宽松限流）
   list: {
     windowMs: 60 * 1000,        // 1 分钟
-    maxRequests: 60,              // 60次/分钟
+    maxRequests: 120,             // 120次/分钟（从60提升到120）
     message: '查询请求过于频繁，请1分钟后再试'
   },
   detail: {
     windowMs: 60 * 1000,        // 1 分钟
-    maxRequests: 120,             // 120次/分钟
+    maxRequests: 200,             // 200次/分钟（从120提升到200）
     message: '查询请求过于频繁，请1分钟后再试'
   },
   search: {
     windowMs: 60 * 1000,        // 1 分钟
-    maxRequests: 30,              // 30次/分钟
+    maxRequests: 60,              // 60次/分钟（从30提升到60）
     message: '搜索请求过于频繁，请1分钟后再试'
   },
   
@@ -43,7 +43,7 @@ export const RateLimitConfig = {
   },
   cart: {
     windowMs: 60 * 1000,        // 1 分钟
-    maxRequests: 60,              // 60次/分钟
+    maxRequests: 120,             // 120次/分钟（从60提升到120）
     message: '购物车操作过于频繁，请1分钟后再试'
   },
   review: {
@@ -59,17 +59,17 @@ export const RateLimitConfig = {
     message: '支付请求过于频繁，请1分钟后再试'
   },
   
-  // 管理类 API（严格限流）
+  // 管理类 API（中等限流）
   admin: {
     windowMs: 60 * 1000,        // 1 分钟
-    maxRequests: 30,              // 30次/分钟
+    maxRequests: 60,              // 60次/分钟（从30提升到60）
     message: '管理员操作过于频繁，请1分钟后再试'
   },
   
   // 默认配置
   default: {
     windowMs: 15 * 60 * 1000,  // 15 分钟
-    maxRequests: 100,             // 100次/15分钟
+    maxRequests: 200,             // 200次/15分钟（从100提升到200）
     message: '请求过于频繁，请稍后再试'
   }
 };
@@ -97,7 +97,7 @@ export function withRateLimit(
   } else {
     config = {
       windowMs: options.windowMs || 15 * 60 * 1000,
-      maxRequests: options.maxRequests || 100,
+      maxRequests: options.maxRequests || 200,
       message: options.message || '请求过于频繁，请稍后再试'
     };
   }

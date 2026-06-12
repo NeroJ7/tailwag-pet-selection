@@ -9,9 +9,7 @@ const pool = new Pool({
   connectionString: process.env.DIRECT_URL || process.env.DATABASE_URL,
   max: 20,
   idleTimeoutMillis: 30000,
-  ssl: process.env.NODE_ENV === 'production'
-    ? { rejectUnauthorized: true }
-    : { rejectUnauthorized: false },
+  ssl: { rejectUnauthorized: false },
 });
 
 async function query(sql: string, params: any[] = []) {
@@ -99,12 +97,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // PUT: 更新数量
     if (req.method === 'PUT') {
       const { quantity } = req.body;
-      if (!quantity || quantity < 1) {
+      const safeQty = Math.min(Math.max(Math.floor(Number(quantity)) || 1, 1), 99);
+      if (safeQty < 1) {
         return res.status(400).json({ error: '数量必须大于0' });
       }
       const result = await query(
         'UPDATE cart_items SET quantity = $1, updated_at = NOW() WHERE id = $2 RETURNING *',
-        [quantity, itemId]
+        [safeQty, itemId]
       );
       return res.status(200).json({ message: '已更新商品数量', item: result.rows[0] });
     }
