@@ -30,6 +30,7 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [addToCartSuccess, setAddToCartSuccess] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -53,7 +54,6 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = async () => {
     if (!product) return;
-    // 始终写入 localStorage（立即反馈）
     addToCart({
       id: product.id,
       name: product.name,
@@ -65,7 +65,6 @@ export default function ProductDetailPage() {
     setAddToCartSuccess(true);
     setTimeout(() => setAddToCartSuccess(false), 3000);
 
-    // 如果用户已登录，同时写入服务端购物车
     if (status === 'authenticated' && session?.user) {
       try {
         await fetchWithCsrf('/api/cart', {
@@ -77,9 +76,18 @@ export default function ProductDetailPage() {
         });
       } catch (err) {
         console.error('服务端购物车同步失败:', err);
-        // 不阻塞用户操作，localStorage 已写入
       }
     }
+  };
+
+  const nextImage = () => {
+    if (!product) return;
+    setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
+  };
+
+  const prevImage = () => {
+    if (!product) return;
+    setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
   };
 
   if (loading) {
@@ -89,6 +97,9 @@ export default function ProductDetailPage() {
   if (!product) {
     return <div className="min-h-screen flex items-center justify-center">产品不存在</div>;
   }
+
+  const images = product.images || [];
+  const currentImage = images[currentImageIndex] || '/placeholder.png';
 
   return (
     <>
@@ -115,25 +126,60 @@ export default function ProductDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* 图片展示 */}
             <div>
-              <div className="bg-white rounded-lg overflow-hidden">
+              {/* 主图区域 */}
+              <div className="relative bg-white rounded-lg overflow-hidden group">
                 <img
-                  src={product.images?.[currentImageIndex] || '/placeholder.png'}
+                  src={currentImage}
                   alt={product.name}
-                  className="w-full h-96 object-cover"
+                  className="w-full h-96 object-cover cursor-zoom-in"
+                  onClick={() => setLightboxOpen(true)}
                 />
+                
+                {/* 图片计数器 */}
+                {images.length > 1 && (
+                  <div className="absolute top-4 right-4 bg-black/60 text-white text-sm px-3 py-1 rounded-full">
+                    {currentImageIndex + 1} / {images.length}
+                  </div>
+                )}
+
+                {/* 左右切换箭头 */}
+                {images.length > 1 && (
+                  <>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </>
+                )}
               </div>
-              {product.images && product.images.length > 1 && (
-                <div className="flex gap-2 mt-4">
-                  {product.images.map((img, index) => (
-                    <img
+
+              {/* 缩略图 */}
+              {images.length > 1 && (
+                <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+                  {images.map((img, index) => (
+                    <button
                       key={index}
-                      src={img}
-                      alt=""
-                      className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
-                        index === currentImageIndex ? 'border-orange-600' : 'border-transparent'
-                      }`}
                       onClick={() => setCurrentImageIndex(index)}
-                    />
+                      className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                        index === currentImageIndex
+                          ? 'border-orange-600 ring-2 ring-orange-200'
+                          : 'border-transparent hover:border-gray-300'
+                      }`}
+                    >
+                      <img src={img} alt="" className="w-full h-full object-cover" />
+                    </button>
                   ))}
                 </div>
               )}
@@ -236,6 +282,51 @@ export default function ProductDetailPage() {
           )}
         </div>
       </div>
+
+      {/* 图片放大查看 Lightbox */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          onClick={() => setLightboxOpen(false)}
+        >
+          <div className="relative max-w-4xl max-h-screen p-4">
+            <img
+              src={currentImage}
+              alt={product.name}
+              className="max-w-full max-h-[85vh] object-contain rounded-lg"
+            />
+            <div className="absolute top-4 right-4 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
+              {currentImageIndex + 1} / {images.length}
+            </div>
+          </div>
+          <button
+            className="absolute top-4 right-4 text-white text-2xl w-10 h-10 bg-black/50 rounded-full hover:bg-black/70 flex items-center justify-center"
+            onClick={() => setLightboxOpen(false)}
+          >
+            ✕
+          </button>
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 }
